@@ -1,0 +1,31 @@
+{
+    "name":       "sample",
+    "version":    "0.0.0",
+    "author":     "Dr. Ralf S. Engelschall <rse@engelschall.com>",
+    "license":    "MIT",
+    "main":       "src/app.js",
+    "devDependencies": {
+        "eslint":                     "6.5.0",
+        "eslint-config-standard":     "14.1.0",
+        "eslint-plugin-standard":     "4.0.1",
+        "eslint-plugin-promise":      "4.2.1",
+        "eslint-plugin-import":       "2.18.2",
+        "eslint-plugin-node":         "10.0.0",
+        "babel-eslint":               "10.0.3"
+    },
+    "dependencies": {
+        "@hapi/hapi":                 "18.4.0",
+        "@hapi/inert":                "5.2.2",
+        "@hapi/boom":                 "8.0.1",
+        "yargs":                      "14.0.0",
+        "knex":                       "0.19.4",
+        "pg":                         "7.12.1",
+        "sqlite3":                    "4.1.0",
+        "pure-uuid":                  "1.5.7"
+    },
+    "scripts": {
+        "postinstall":                "npx modclean -p . -r -P -n default:safe,default:caution",
+        "build":                      "eslint --config eslint.yaml src/*.js",
+        "start":                      "node src/app.js"
+    }
+}
