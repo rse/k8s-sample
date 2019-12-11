@@ -5,7 +5,7 @@
 ##
 
 #   a temporary storage area
-tmpfile="${TMPDIR-/tmp}/demo.$$.tmp"
+tmpfile="${TMPDIR-/tmp}/k8s-util.$$.tmp"
 
 #   display verbose message
 verbose () {
