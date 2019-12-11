@@ -76,10 +76,3 @@ k8s-7:
 	kubectl --context root   -n kube-system get all; \
 	kubectl --context sample -n sample get all
 
-k8s-maesh:
-	source ~/.k8s/env; \
-	kubectl create namespace maesh; \
-	helm repo add maesh https://containous.github.io/maesh/charts; \
-	helm repo update; \
-	helm install maesh --namespace=maesh --set "tracing.deploy=false,metrics.deploy=false,smi=true" maesh/maesh
-
