@@ -11,7 +11,7 @@ ARG         IMAGE_VERSION=0.9.0
 ARG         IMAGE_RELEASE=20190930
 
 #   start with the standard Node.js container image
-FROM        node:12.10.0-alpine
+FROM        node:12.13.1-alpine
 
 #   update system
 RUN         apk update && \
