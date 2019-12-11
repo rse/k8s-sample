@@ -1,0 +1,206 @@
+##
+##  k8s-util.yaml -- Kubernetes (K8S) YAML Configuration Snippets
+##
+
+%!create-namespace
+---
+#   create "{{ns}}" namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: {{ns}}
+    labels:
+        name: {{ns}}
+
+%!create-cluster-admin
+---
+#   create "{{sa}}" cluster service account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+    namespace: {{ns}}
+    name: {{sa}}
+    labels:
+        name: {{sa}}
+---
+#   create full-access role for cluster service account "{{sa}}"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+    namespace: {{ns}}
+    name: {{sa}}-role
+    labels:
+        name: {{sa}}
+rules:
+    -   apiGroups: [ "", "*" ]
+        resources: [ "*" ]
+        verbs: [ "*" ]
+---
+#   bind full-access role to cluster service account "{{sa}}"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+    namespace: {{ns}}
+    name: {{sa}}-role-binding
+    labels:
+        name: {{sa}}
+subjects:
+    -   kind: ServiceAccount
+        namespace: {{ns}}
+        name: {{sa}}
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: {{sa}}-role
+
+%!create-namespace-admin
+#   create "{{sa}}" service account in "{{ns}}" namespace
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+    namespace: {{ns}}
+    name: {{sa}}
+    labels:
+        name: {{sa}}
+---
+#   create full-access role for service account "{{sa}}" in "{{ns}}" namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+    namespace: {{ns}}
+    name: {{sa}}-role
+    labels:
+        name: {{sa}}
+rules:
+    -   apiGroups: [ "", "*" ]
+        resources: [ "*" ]
+        verbs: [ "*" ]
+---
+#   bind full-access role to service account "{{sa}}" in "{{ns}}" namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+    namespace: {{ns}}
+    name: {{sa}}-role-binding
+    labels:
+        name: {{sa}}
+subjects:
+    -   kind: ServiceAccount
+        namespace: {{ns}}
+        name: {{sa}}
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: {{sa}}-role
+
+%!generate-kubeconfig-stub
+---
+apiVersion: v1
+kind: Config
+current-context:
+
+%!generate-kubeconfig
+---
+apiVersion: v1
+kind: Config
+current-context: {{context}}
+contexts:
+    -   name: {{context}}
+        context:
+            cluster: {{cluster}}
+            namespace: {{ns}}
+            user: {{cluster}}-{{sa}}
+clusters:
+    -   name: {{cluster}}
+        cluster:
+            server: {{server}}
+users:
+    -   name: {{cluster}}-{{sa}}
+        user:
+            token: {{token}}
+
+%!create-deployment
+---
+#   create persistent volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    namespace: {{ns}}
+    name: {{name}}-storage
+    labels:
+        app: {{name}}
+spec:
+    accessModes:
+        - ReadWriteOnce
+    volumeMode: Filesystem
+    storageClassName: nfs
+    resources:
+        requests:
+            storage: 10Mi
+---
+#   create deployment for "{{name}}" application
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: {{ns}}
+    name: {{name}}
+    labels:
+        app: {{name}}
+spec:
+    selector:
+        matchLabels:
+            app: {{name}}
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                app: {{name}}
+        spec:
+            restartPolicy: Always
+            containers:
+                -   name: {{name}}
+                    image: {{image}}
+                    ports:
+                        -   containerPort: {{port}}
+                    volumeMounts:
+                        -   name: {{name}}-storage
+                            mountPath: "/mnt"
+            volumes:
+                -   name: {{name}}-storage
+                    persistentVolumeClaim:
+                        claimName: {{name}}-storage
+---
+#   create service for "{{name}}" application
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: {{ns}}
+    name: {{name}}
+    labels:
+        app: {{name}}
+spec:
+    type: ClusterIP
+    selector:
+        app: {{name}}
+    ports:
+        -   protocol: TCP
+            port: 80
+            targetPort: {{port}}
+---
+#   create ingress for service of "{{name}}" application
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    namespace: {{ns}}
+    name: {{name}}
+    annotations:
+        traefik.ingress.kubernetes.io/rewrite-target: /
+spec:
+    rules:
+        -   http:
+                paths:
+                    -   path: /{{name}}
+                        backend:
+                            serviceName: {{name}}
+                            servicePort: 80
+
