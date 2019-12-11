@@ -27,7 +27,7 @@ services:
     #   the PostgreSQL database
     sample-db:
         container_name: sample-db
-        image:          docker.msg.team/ps/std-postgresql:11.5-20190814
+        image:          docker.msg.team/ps/std-postgresql:12.1-20191114
         init:           true
         restart:        always
         environment:
