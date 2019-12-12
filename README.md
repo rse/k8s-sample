@@ -40,7 +40,7 @@ Establishing Local Environment
 ------------------------------
 
 In order to test-drive this application the CLIs for accessing a Docker
-and/or Kubernetes run-time envionment is required. Two Bash scripts help
+and/or Kubernetes run-time environment is required. Two Bash scripts help
 you to provision those CLIs locally under Linux (amd64) systems.
 
 - For standard contexts:
@@ -60,5 +60,9 @@ you to provision those CLIs locally under Linux (amd64) systems.
 Deploying to Run-Time Environments
 ----------------------------------
 
-FIXME
+For deploying *k8s-sample* you have two options:
+
+- *Deployment to Docker run-time environment*
+
+- *Deployment to Kubernetes run-time environment*
 
