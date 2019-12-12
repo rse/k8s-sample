@@ -43,6 +43,15 @@ cmd_create_namespace () {
     kubectl apply -f - < <(conf create-namespace ns="$ns")
 }
 
+#   delete a namespace
+cmd_delete_namespace () {
+    ns="$1"
+
+    #   destroy objects in Kubernetes
+    verbose "++ delete namespace \"$ns\""
+    kubectl delete -f - < <(conf create-namespace ns="$ns")
+}
+
 #   create a cluster admin service account
 cmd_create_cluster_admin () {
     ns="$1"; sa="$2"
@@ -50,6 +59,15 @@ cmd_create_cluster_admin () {
     #   generate objects in Kubernetes
     verbose "++ create cluster admin service account \"$sa\" in namespace \"$ns\""
     kubectl apply -f - < <(conf create-cluster-admin ns="$ns" sa="$sa")
+}
+
+#   delete a cluster admin service account
+cmd_delete_cluster_admin () {
+    ns="$1"; sa="$2"
+
+    #   destroy objects in Kubernetes
+    verbose "++ delete cluster admin service account \"$sa\" in namespace \"$ns\""
+    kubectl delete -f - < <(conf create-cluster-admin ns="$ns" sa="$sa")
 }
 
 #   create a namespace admin service account
@@ -62,6 +80,15 @@ cmd_create_namespace_admin () {
     while [[ $(kubectl -n "$ns" get -l name="$sa" sa -o jsonpath --template='{.items[].secrets[].name}') == "" ]]; do
         sleep 0.25
     done
+}
+
+#   delete a namespace admin service account
+cmd_delete_namespace_admin () {
+    ns="$1"; sa="$2"
+
+    #   destroy objects in Kubernetes
+    verbose "++ delete namespace admin service account \"$sa\" in namespace \"$ns\""
+    kubectl delete -f - < <(conf create-namespace-admin ns="$ns" sa="$sa")
 }
 
 #   generate a K8S kubectl(1) configuration stub
@@ -107,6 +134,16 @@ cmd_create_deployment () {
 
     verbose "++ await deployment for app \"$name\""
     kubectl -n "$ns" wait --timeout=60s --for=condition=Available deployment.apps/$name
+}
+
+#   delete deployment
+cmd_delete_deployment () {
+    ns="$1"; name="$2"; image="$3"; port="$4"
+
+    #   destroy objects in Kubernetes
+    verbose "++ delete deployment for app \"$name\" (image: \"$image\", port: $port)"
+    kubectl delete -f - < <(conf create-deployment \
+        ns="$ns" name="$name" image="$image" port="$port")
 }
 
 #   dispatch according to command
