@@ -16,7 +16,7 @@ start:
 	npm start
 
 clean:
-	-rm -rf dist
+	-rm -rf dst
 
 distclean: clean
 	-rm -rf node_modules
