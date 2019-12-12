@@ -63,13 +63,13 @@ The k8s-sample consts of the following parts:
   $ (cd 3-runtime-docker && make down)
   ```
 
-- `4-runtime-k8s`:<br/>
+- `4-runtime-kubernetes`:<br/>
   Here you can find the procedure for deploying *k8s-sample* onto
   a Kubernetes run-time environment.
 
   ```sh
-  $ (cd 4-runtime-k8s && make up logs)
+  $ (cd 4-runtime-kubernetes && make up logs)
   # access the application via http://<hostname>:9090/
-  $ (cd 4-runtime-k8s && make down)
+  $ (cd 4-runtime-kubernetes && make down)
   ```
 
