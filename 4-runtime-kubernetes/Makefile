@@ -17,7 +17,8 @@ up:
 down:
 
 logs:
-	KUBECONFIG=.kubeconfig.yaml kubectl -n k8s-sample logs -f k8s-sample
+	KUBECONFIG=.kubeconfig.yaml kubectl -n k8s-sample logs -l app=k8s-sample --all-containers=true; \
+	KUBECONFIG=.kubeconfig.yaml kubectl -n k8s-sample logs -l app=k8s-sample --all-containers=true -f
 
 status:
 	KUBECONFIG=.kubeconfig.yaml kubectl get all
