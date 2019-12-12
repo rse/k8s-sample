@@ -14,17 +14,17 @@ up:
 	KUBECONFIG=.kubeconfig.yaml $(K8S_UTIL) create-deployment \
 	    k8s-sample k8s-sample "docker.io/engelschall/k8s-sample:0.9.0-20191212" 9090
 
-down:
-	KUBECONFIG=.kubeconfig.yaml $(K8S_UTIL) delete-deployment \
-	    k8s-sample k8s-sample "docker.io/engelschall/k8s-sample:0.9.0-20191212" 9090
-	$(K8S_UTIL) delete-namespace-admin k8s-sample k8s-sample; \
-	$(K8S_UTIL) delete-namespace k8s-sample
+status:
+	KUBECONFIG=.kubeconfig.yaml kubectl get all
+	KUBECONFIG=.kubeconfig.yaml kubectl describe deployment k8s-sample
 
 logs:
 	KUBECONFIG=.kubeconfig.yaml kubectl -n k8s-sample logs -l app=k8s-sample --all-containers=true; \
 	KUBECONFIG=.kubeconfig.yaml kubectl -n k8s-sample logs -l app=k8s-sample --all-containers=true -f
 
-status:
-	KUBECONFIG=.kubeconfig.yaml kubectl get all
-	KUBECONFIG=.kubeconfig.yaml kubectl describe deployment k8s-sample
+down:
+	KUBECONFIG=.kubeconfig.yaml $(K8S_UTIL) delete-deployment \
+	    k8s-sample k8s-sample "docker.io/engelschall/k8s-sample:0.9.0-20191212" 9090
+	$(K8S_UTIL) delete-namespace-admin k8s-sample k8s-sample; \
+	$(K8S_UTIL) delete-namespace k8s-sample
 
