@@ -5,10 +5,10 @@
 ##
 
 #   container information
-ARG         IMAGE_PREFIX=docker.pkg.github.com/rse/k8s-sample/
+ARG         IMAGE_PREFIX=docker.io/engelschall/
 ARG         IMAGE_NAME=k8s-sample
 ARG         IMAGE_VERSION=0.9.0
-ARG         IMAGE_RELEASE=20190930
+ARG         IMAGE_RELEASE=20191212
 
 #   start with the standard Node.js container image
 FROM        node:12.13.1-alpine
