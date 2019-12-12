@@ -10,9 +10,12 @@ DETACH   = yes
 up:
 	docker-compose -f Composefile.$(DATABASE) up `echo $(DETACH) | sed -e 's;^yes$$;-d;' -e 's;^no$$;;'`
 
-down:
-	docker-compose -f Composefile.$(DATABASE) down
+status:
+	docker-compose -f Composefile.$(DATABASE) ps
 
 logs:
-	docker logs -f k8s-sample-app
+	docker-compose -f Composefile.$(DATABASE) logs -f
+
+down:
+	docker-compose -f Composefile.$(DATABASE) down
 
