@@ -14,5 +14,5 @@ down:
 	docker-compose -f Composefile.$(DATABASE) down
 
 logs:
-	docker logs -f sample-app
+	docker logs -f k8s-sample-app
 

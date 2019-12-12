@@ -8,19 +8,19 @@ version: "3.7"
 
 services:
 
-    #   the Sample application
-    sample-app:
-        container_name: sample-app
+    #   the k8s-sample application
+    k8s-sample-app:
+        container_name: k8s-sample-app
         image:          docker.pkg.github.com/rse/k8s-sample/k8s-sample:0.9.0-20190930
         command:        -a 0.0.0.0 -p 9090
         init:           true
         restart:        always
         volumes:
-            - sample-app:/data
+            - k8s-sample-app:/data
         ports:
             - 9090:9090
 
 volumes:
-    sample-app:
-        name: sample-app
+    k8s-sample-app:
+        name: k8s-sample-app
 

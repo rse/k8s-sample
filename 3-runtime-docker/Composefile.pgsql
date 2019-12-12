@@ -8,25 +8,25 @@ version: "3.7"
 
 services:
 
-    #   the Sample application
-    sample-app:
-        container_name: sample-app
+    #   the k8s-sample application
+    k8s-sample-app:
+        container_name: k8s-sample-app
         image:          docker.pkg.github.com/rse/k8s-sample/k8s-sample:0.9.0-20190930
         command:        -a 0.0.0.0 -p 9090 -d pg:postgres://app:app@db/app -w 10
         init:           true
         restart:        always
         volumes:
-            - sample-app:/data
+            - k8s-sample-app:/data
         networks:
-            - sample
+            - k8s-sample
         depends_on:
-            - sample-db
+            - k8s-sample-db
         ports:
             - 9090:9090
 
-    #   the PostgreSQL database
-    sample-db:
-        container_name: sample-db
+    #   the k8s-sample database
+    k8s-sample-db:
+        container_name: k8s-sample-db
         image:          docker.msg.team/ps/std-postgresql:12.1-20191114
         init:           true
         restart:        always
@@ -37,18 +37,18 @@ services:
             CFG_CUSTOM_USERNAME: app
             CFG_CUSTOM_PASSWORD: app
         volumes:
-            - sample-db:/data
+            - k8s-sample-db:/data
         networks:
-            sample: { aliases: [ db ] }
+            k8s-sample: { aliases: [ db ] }
 
 volumes:
-    sample-app:
-        name: sample-app
-    sample-db:
-        name: sample-db
+    k8s-sample-app:
+        name: k8s-sample-app
+    k8s-sample-db:
+        name: k8s-sample-db
 
 networks:
-    sample:
-        name: sample
+    k8s-sample:
+        name: k8s-sample
         driver: bridge
 
