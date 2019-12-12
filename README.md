@@ -62,7 +62,7 @@ Deploying to Run-Time Environments
 
 For deploying *k8s-sample* you have two options:
 
-- *Deployment to Docker run-time environment*
+- **Deployment to Docker run-time environment**
 
-- *Deployment to Kubernetes run-time environment*
+- **Deployment to Kubernetes run-time environment**
 
