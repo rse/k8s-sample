@@ -5,16 +5,20 @@
 ##
 
 DATABASE = sqlite
+K8S_UTIL = bash k8s-util.bash
 
-up:
-	bash k8s-util.bash create-namespace k8s-sample; \
-	bash k8s-util.bash create-namespace-admin k8s-sample k8s-sample; \
-	bash k8s-util.bash generate-kubeconfig k8s-sample k8s-sample k8s-sample >.kubeconfig.yaml; \
-	export KUBECONFIG=./.kubeconfig.yaml; \
-	bash k8s-util.bash create-deployment k8s-sample k8s-sample \
-        "docker.pkg.github.com/rse/k8s-sample/k8s-sample:0.9.0-20190930" 9090; \
-	kubectl get all; \
-	kubectl describe deployment k8s-sample
+up: a b c
+
+a:
+	$(K8S_UTIL) create-namespace k8s-sample; \
+	$(K8S_UTIL) create-namespace-admin k8s-sample k8s-sample; \
+	$(K8S_UTIL) generate-kubeconfig k8s-sample k8s-sample k8s-sample >.kubeconfig.yaml
+b:
+	KUBECONFIG=.kubeconfig.yaml $(K8S_UTIL) create-deployment \
+	    k8s-sample k8s-sample "docker.pkg.github.com/rse/k8s-sample/k8s-sample:0.9.0-20190930" 9090
+c:
+	KUBECONFIG=.kubeconfig.yaml kubectl get all
+	KUBECONFIG=.kubeconfig.yaml kubectl describe deployment k8s-sample
 
 down:
 

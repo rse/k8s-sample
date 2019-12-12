@@ -18,11 +18,6 @@ fatal () {
     exit 1
 }
 
-#   execute ourself
-k8s_util () {
-    /bin/bash $0 ${1+"$@"}
-}
-
 #   fetch configuration
 conf () {
     local id="$1"
@@ -33,7 +28,7 @@ conf () {
         local val=$(echo "$arg" | sed -e 's;^[^=]*=;;')
         cmd="$cmd -e \"s;{{${var}}};${val};g\""
     done
-    eval "$cmd" <k8s-util.yaml >$tmpfile
+    eval "$cmd" <"$(dirname ${BASH_SOURCE})/k8s-util.yaml" >$tmpfile
     sed -e "s;^;-- | ;" <$tmpfile 1>&2
     cat $tmpfile
     rm -f $tmpfile
@@ -45,7 +40,7 @@ cmd_create_namespace () {
 
     #   generate objects in Kubernetes
     verbose "++ create namespace \"$ns\""
-    kubectl apply -f <(conf create-namespace ns="$ns")
+    kubectl apply -f - < <(conf create-namespace ns="$ns")
 }
 
 #   create a cluster admin service account
@@ -54,7 +49,7 @@ cmd_create_cluster_admin () {
 
     #   generate objects in Kubernetes
     verbose "++ create cluster admin service account \"$sa\" in namespace \"$ns\""
-    kubectl apply -f <(conf create-cluster-admin ns="$ns" sa="$sa")
+    kubectl apply -f - < <(conf create-cluster-admin ns="$ns" sa="$sa")
 }
 
 #   create a namespace admin service account
@@ -63,7 +58,7 @@ cmd_create_namespace_admin () {
 
     #   generate objects in Kubernetes
     verbose "++ create namespace admin service account \"$sa\" in namespace \"$ns\""
-    kubectl apply -f <(conf create-namespace-admin ns="$ns" sa="$sa")
+    kubectl apply -f - < <(conf create-namespace-admin ns="$ns" sa="$sa")
     while [[ $(kubectl -n "$ns" get -l name="$sa" sa -o jsonpath --template='{.items[].secrets[].name}') == "" ]]; do
         sleep 0.25
     done
@@ -93,7 +88,7 @@ cmd_generate_kubeconfig () {
     #   determine generated token of service account
     verbose "++ determine generated access token of service account \"$sa\""
     secret=$(kubectl -n "$ns" get sa "$sa" -o jsonpath="{.secrets[0].name}")
-    token=$(kubectl -n "$ns" get secret "$secret" -o jsonpath='{.data.token}' | base64 -d)
+    token=$(kubectl -n "$ns" get secret "$secret" -o json | jq -r ".data.token | @base64d")
 
     #   generate K8S kubectl(1) configuration for service account
     verbose "++ generate kubectl(1) for service account \"$sa\" in namespace \"$ns\""
@@ -107,8 +102,10 @@ cmd_create_deployment () {
 
     #   generate objects in Kubernetes
     verbose "++ create deployment for app \"$name\" (image: \"$image\", port: $port)"
-    kubectl apply -f <(conf create-deployment \
+    kubectl apply -f - < <(conf create-deployment \
         ns="$ns" name="$name" image="$image" port="$port")
+
+    verbose "++ await deployment for app \"$name\""
     kubectl -n "$ns" wait --timeout=60s --for=condition=Available deployment.apps/$name
 }
 
