@@ -19,9 +19,8 @@ For standard contexts:
 ```sh
 $ git clone https://github.com/rse/k8s-sample/
 $ cd k8s-sample
-$ source 0-environment/kubernetes.bash
-$ cd 4-runtime-kubernetes
-$ make install [DATABASE=pgsql]
+$ source 2-env-kubernetes/kubernetes.bash
+$ (cd 6-run-kubernetes && make install [DATABASE=pgsql])
 $ open http[s]://<your-kubernetes-ingress-endpoint>/k8s-sample/
 ```
 
@@ -32,9 +31,8 @@ FQDN of the msg Project Server instance):
 $ ssh root@<hostname> docker-stack install ase-k3s
 $ git clone https://github.com/rse/k8s-sample/
 $ cd k8s-sample
-$ source 0-environment/kubernetes-ps.bash <hostname>
-$ cd 4-runtime-kubernetes
-$ make install [DATABASE=pgsql]
+$ source 2-env-kubernetes/kubernetes-ps.bash <hostname>
+$ (cd 4-runtime-kubernetes && make install [DATABASE=pgsql])
 $ open http[s]://<hostname>/ase-k3s/k8s-sample/
 ```
 
@@ -43,19 +41,17 @@ The Parts In Detail
 
 The **k8s-sample** consts of the following parts:
 
-- `0-environment`:<br/>
-  Here you can find scripts for establishing your local Docker and/or
-  Kubernetes environment. In order to build and deploy **k8s-sample**,
-  the command-line clients for accessing a Docker and/or Kubernetes
-  run-time environment are required. Four Bash scripts help you to
-  provision those command-line clients locally under Linux (amd64)
-  systems.
+- `1-env-docker`:<br/>
+  Here you can find scripts for establishing your local Docker
+  environment. In order to build and deploy **k8s-sample**, the
+  command-line clients for accessing a Docker run-time environment are
+  required. Two Bash scripts help you to provision those command-line
+  clients locally under Linux (amd64) systems.
 
   - For standard contexts:
 
     ```sh
-    $ source 0-environment/docker.bash
-    $ source 0-environment/kubernetes.bash
+    $ source 1-env-docker/docker.bash
     ```
 
   - For special msg Project Server (PS) contexts (where `<hostname>` is the
@@ -63,54 +59,74 @@ The **k8s-sample** consts of the following parts:
     stack was installed with `docker-stack install ase-k3s`:
 
     ```sh
-    $ source 0-environment/docker-ps.bash     <hostname>
-    $ source 0-environment/kubernetes-ps.bash <hostname>
+    $ source 1-env-docker/docker-ps.bash <hostname>
     ```
 
-- `1-source`:<br/>
+- `2-env-kubernetes`:<br/>
+  Here you can find scripts for establishing your local Kubernetes
+  environment. In order to build and deploy **k8s-sample**, the
+  command-line clients for accessing a Kubernetes run-time environment are
+  required. Two Bash scripts help you to provision those command-line
+  clients locally under Linux (amd64) systems.
+
+  - For standard contexts:
+
+    ```sh
+    $ source 2-env-kubernetes/kubernetes.bash
+    ```
+
+  - For special msg Project Server (PS) contexts (where `<hostname>` is the
+    hostname of the msg Project Server instance) where the K3S Kubernetes
+    stack was installed with `docker-stack install ase-k3s`:
+
+    ```sh
+    $ source 2-env-kubernetes/kubernetes-ps.bash <hostname>
+    ```
+
+- `3-app-source`:<br/>
   Here you can find the sources of the **k8s-sample** HTML5 SPA client and
   the corresponding Node.js server. Only used by you in case you want
   to understand and locally test-drive the application itself.
 
   ```sh
-  $ (cd 1-source/fe && make build)
-  $ (cd 1-source/be && make build start)
+  $ (cd 3-app-source/fe && make build)
+  $ (cd 3-app-source/be && make build start)
   ```
 
   After this you can access the application under `https://127.0.0.1:9090/`.
   You can stop the application with `CTRL+C`.
 
-- `2-image`:<br/>
+- `4-app-container`:<br/>
   Here you can find the procedure for building and packaging the
-  **k8s-sample** application as a Docker container. Only used by you in
-  case you want to understand the Docker container packaging or
+  **k8s-sample** application as a Docker/OCI container. Only used by you in
+  case you want to understand the Docker/OCI container packaging or
   build and push the container to Docker Hub.
 
   ```sh
-  $ (cd 2-image && make build push)
+  $ (cd 3-app-container && make build push)
   ```
 
-- `3-runtime-docker`:<br/>
+- `5-run-docker`:<br/>
   Here you can find the procedure for installing **k8s-sample** onto
   a Docker run-time environment via the clients docker(1) and docker-compose(1).
 
   ```sh
-  $ (cd 3-runtime-docker && make install [DATABASE=pgsql])
+  $ (cd 5-run-docker && make install [DATABASE=pgsql])
   ```
 
   After this you can access the application under `http://<hostname>:9090/`.
   You can uninstall the application again with:
 
   ```sh
-  $ (cd 3-runtime-docker && make uninstall)
+  $ (cd 5-run-docker && make uninstall)
   ```
 
-- `4-runtime-kubernetes`:<br/>
+- `6-run-kubernetes`:<br/>
   Here you can find the procedure for installing **k8s-sample** onto
   a Kubernetes run-time environment via the clients kubectl(1) and helm(1).
 
   ```sh
-  $ (cd 4-runtime-kubernetes && make install [DATABASE=pgsql])
+  $ (cd 6-run-kubernetes && make install [DATABASE=pgsql])
   ```
 
   After this you can access the application under `http://<endpoint>/k8s-sample/`
@@ -120,6 +136,6 @@ The **k8s-sample** consts of the following parts:
   You can uninstall the application again with:
 
   ```sh
-  $ (cd 4-runtime-kubernetes && make uninstall)
+  $ (cd 6-run-kubernetes && make uninstall)
   ```
 
