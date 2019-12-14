@@ -65,7 +65,7 @@ The k8s-sample consts of the following parts:
 
 - `4-runtime-kubernetes`:<br/>
   Here you can find the procedure for deploying *k8s-sample* onto
-  a Kubernetes run-time environment.
+  a Kubernetes run-time environment via kubectl(1) and helm(1).
 
   ```sh
   $ (cd 4-runtime-kubernetes && make up logs)
