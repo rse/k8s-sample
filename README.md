@@ -1,6 +1,6 @@
 
-k8s-sample
-==========
+k8s-sample -- Kubernetes Sample Application
+===========================================
 
 This is a sample application for testing the deployment on the
 container run-times Docker and Kubernetes (K8S). The application uses a
