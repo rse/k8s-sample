@@ -27,7 +27,7 @@ $ open http[s]://<your-kubernetes-ingress-endpoint>/k8s-sample/
 ```
 
 For special msg Project Server (PS) contexts (where `<hostname>` is the
-hostname of the msg Project Server instance):
+FQDN of the msg Project Server instance):
 
 ```sh
 $ ssh root@<hostname> docker-stack install ase-k3s
