@@ -79,8 +79,6 @@ RUN         rm -rf /app/tmp/*
 RUN         rm -rf /var/cache/apk/*
 
 #   provide volume
-RUN         mkdir /data && \
-            chown app:app /data
 VOLUME      [ "/data" ]
 
 #   finally switch to target environment
