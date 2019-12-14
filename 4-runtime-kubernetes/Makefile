@@ -4,10 +4,11 @@
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 
-DATABASE = sqlite
+DATABASE         = sqlite
+DATABASE_ENABLED = `echo "$(DATABASE)" | sed -e 's;^pgsql$$;true;' -e 's;^sqlite$$;false;'`
 
 up:
-	helm install k8s-sample .
+	@cmd="helm install --set db.enabled=$(DATABASE_ENABLED) k8s-sample ."; echo "$$cmd"; $$cmd
 
 lint:
 	helm lint .
@@ -15,7 +16,6 @@ lint:
 status:
 	helm status k8s-sample
 	kubectl -n k8s-sample get all -l app=k8s-sample
-	kubectl -n k8s-sample describe deployment -l app=k8s-sample
 
 logs:
 	kubectl -n k8s-sample logs -l app=k8s-sample

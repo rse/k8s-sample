@@ -6,7 +6,7 @@ This is a sample application for testing the deployment on the
 container run-times Docker and Kubernetes (K8S). The application uses a
 Rich-Client architecture, comprised of an HTML5 Single-Page Application
 (SPA) client and a Node.js server and runs under an arbitrary URL
-prefix.
+prefix. The application shows
 
 Understanding the Parts
 -----------------------
