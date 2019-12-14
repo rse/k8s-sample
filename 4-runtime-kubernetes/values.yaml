@@ -14,7 +14,7 @@ app:
     name:             k8s-sample
     image:
         name:         "docker.io/engelschall/k8s-sample"
-        tag:          "0.9.0-20191212"
+        tag:          "0.9.0-20191214"
     container:
         replicas:     1
         strategy:     Recreate
