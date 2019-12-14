@@ -31,7 +31,8 @@ The **k8s-sample** consts of the following parts:
     ```
 
   - For special msg Project Server (PS) contexts (where `<hostname>` is the
-    hostname of the msg Project Server instance):
+    hostname of the msg Project Server instance) where the K3S Kubernetes
+    stack was installed with `docker-stack install ase-k3s`:
 
     ```sh
     $ source 0-environment/docker-ps.bash     <hostname>
