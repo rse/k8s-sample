@@ -11,8 +11,37 @@ data and can control the application process.
 
 ![k8s-sample screenshot](screenshot.png)
 
-Understanding and Using the Parts
----------------------------------
+Quick Test-Drive
+----------------
+
+For standard contexts:
+
+```sh
+$ git clone https://github.com/rse/k8s-sample/
+$ cd k8s-sample
+$ source 0-environment/kubernetes.bash
+$ cd 4-runtime-kubernetes
+$ make install
+# (wait 5s for Kubernetes to finish deployment)
+$ open http[s]://<your-kubernetes-ingress-endpoint>/k8s-sample
+```
+
+For special msg Project Server (PS) contexts (where `<hostname>` is the
+hostname of the msg Project Server instance):
+
+```sh
+$ ssh root@<hostname> docker-stack install ase-k3s
+$ git clone https://github.com/rse/k8s-sample/
+$ cd k8s-sample
+$ source 0-environment/kubernetes-ps.bash <hostname>
+$ cd 4-runtime-kubernetes
+$ make install
+# (wait 5s for Kubernetes to finish deployment)
+$ open http[s]://<hostname>/ase-k3s/k8s-sample
+```
+
+The Parts In Detail
+-------------------
 
 The **k8s-sample** consts of the following parts:
 
