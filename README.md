@@ -21,8 +21,7 @@ $ git clone https://github.com/rse/k8s-sample/
 $ cd k8s-sample
 $ source 0-environment/kubernetes.bash
 $ cd 4-runtime-kubernetes
-$ make install
-# (wait 5s for Kubernetes to finish deployment)
+$ make install await-install [DATABASE=pgsql]
 $ open http[s]://<your-kubernetes-ingress-endpoint>/k8s-sample/
 ```
 
@@ -35,8 +34,7 @@ $ git clone https://github.com/rse/k8s-sample/
 $ cd k8s-sample
 $ source 0-environment/kubernetes-ps.bash <hostname>
 $ cd 4-runtime-kubernetes
-$ make install
-# (wait 5s for Kubernetes to finish deployment)
+$ make install await-install [DATABASE=pgsql]
 $ open http[s]://<hostname>/ase-k3s/k8s-sample/
 ```
 
@@ -97,7 +95,7 @@ The **k8s-sample** consts of the following parts:
   a Docker run-time environment via the clients docker(1) and docker-compose(1).
 
   ```sh
-  $ (cd 3-runtime-docker && make install)
+  $ (cd 3-runtime-docker && make install [DATABASE=pgsql])
   ```
 
   After this you can access the application under `http://<hostname>:9090/`.
@@ -112,7 +110,7 @@ The **k8s-sample** consts of the following parts:
   a Kubernetes run-time environment via the clients kubectl(1) and helm(1).
 
   ```sh
-  $ (cd 4-runtime-kubernetes && make install)
+  $ (cd 4-runtime-kubernetes && make install await-install [DATABASE=pgsql])
   ```
 
   After this you can access the application under `http://<endpoint>/k8s-sample/`
@@ -122,6 +120,6 @@ The **k8s-sample** consts of the following parts:
   You can uninstall the application again with:
 
   ```sh
-  $ (cd 4-runtime-kubernetes && make uninstall)
+  $ (cd 4-runtime-kubernetes && make uninstall await-uninstall)
   ```
 
