@@ -7,7 +7,7 @@
 DATABASE = sqlite
 DETACH   = yes
 
-up:
+install:
 	docker-compose -f Composefile.$(DATABASE) up `echo $(DETACH) | sed -e 's;^yes$$;-d;' -e 's;^no$$;;'`
 
 status:
@@ -16,6 +16,6 @@ status:
 logs:
 	docker-compose -f Composefile.$(DATABASE) logs -f
 
-down:
+uninstall:
 	docker-compose -f Composefile.$(DATABASE) down
 
