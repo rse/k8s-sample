@@ -8,7 +8,7 @@
 ARG         IMAGE_PREFIX=docker.io/engelschall/
 ARG         IMAGE_NAME=k8s-sample
 ARG         IMAGE_VERSION=0.9.0
-ARG         IMAGE_RELEASE=20191212
+ARG         IMAGE_RELEASE=20191214
 
 #   start with the standard Node.js container image
 FROM        node:12.13.1-alpine
@@ -79,6 +79,8 @@ RUN         rm -rf /app/tmp/*
 RUN         rm -rf /var/cache/apk/*
 
 #   provide volume
+RUN         mkdir /data && \
+            chown app:app /data
 VOLUME      [ "/data" ]
 
 #   finally switch to target environment
