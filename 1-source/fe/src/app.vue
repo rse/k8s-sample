@@ -8,7 +8,7 @@
     <md-app class="md-elevation-4" md-waterfall md-mode="fixed-last">
         <md-app-toolbar class="md-primary md-dense">
             <div class="md-toolbar-row">
-                <span class="md-title">Sample Application {{ id ? `(Id: ${id})` : "" }}</span>
+                <span class="md-title">k8s-sample &mdash; Kubernetes Sample Application &nbsp; {{ id ? `(Id: ${id})` : "" }}</span>
             </div>
             <div class="md-toolbar-row">
                 <md-tabs md-sync-route class="md-primary">
