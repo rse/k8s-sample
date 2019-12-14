@@ -8,6 +8,8 @@ Rich-Client architecture, comprised of an HTML5 Single-Page Application
 (SPA) client and a Node.js server and runs under an arbitrary URL
 prefix. The application shows
 
+![k8s-sample screenshot](screenshot.png)
+
 Understanding the Parts
 -----------------------
 
