@@ -1,0 +1,44 @@
+##
+##  Sample -- Sample Application
+##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
+##
+
+---
+#   persistent volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    namespace: {{ .Values.ns.name }}
+    name: {{ .Values.app.name }}
+    labels:
+        app: {{ .Values.id }}
+spec:
+    accessModes:
+        - ReadWriteOnce
+    volumeMode: Filesystem
+    storageClassName: {{ .Values.app.storage.type }}
+    resources:
+        requests:
+            storage: {{ .Values.app.storage.size }}
+
+---
+{{- if .Values.db.enabled }}
+#   persistent volume claim (for database)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    namespace: {{ .Values.ns.name }}
+    name: {{ .Values.db.name }}
+    labels:
+        app: {{ .Values.id }}
+spec:
+    accessModes:
+        - ReadWriteOnce
+    volumeMode: Filesystem
+    storageClassName: {{ .Values.db.storage.type }}
+    resources:
+        requests:
+            storage: {{ .Values.db.storage.size }}
+{{- end }}
+

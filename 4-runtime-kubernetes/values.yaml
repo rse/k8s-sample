@@ -1,0 +1,59 @@
+##
+##  Sample -- Sample Application
+##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
+##
+
+id:                   k8s-sample
+
+ns:
+    name:             k8s-sample
+    account:          k8s-sample
+
+app:
+    name:             k8s-sample
+    image:
+        name:         "docker.io/engelschall/k8s-sample"
+        tag:          "0.9.0-20191212"
+    container:
+        replicas:     1
+        strategy:     Recreate
+        restart:      Always
+        args:
+            default:  [ "-d", "sqlite3:/data/app.sqlite" ]
+            db:       [ "-d", "pg:postgres://app:app@k8s-sample-db:5432/app", "-w", "10" ]
+        env:
+    service:
+        type:         TCP
+        port:         9090
+        url:          /k8s-sample
+    storage:
+        path:         /data
+        type:         nfs
+        size:         100Mi
+
+db:
+    enabled:          false
+    name:             k8s-sample-db
+    image:
+        name:         "docker.msg.team/ps/std-postgresql"
+        tag:          "12.1-20191214"
+    container:
+        replicas:     1
+        strategy:     Recreate
+        restart:      Always
+        args:         []
+        env:
+            -         { name: CFG_ADMIN_PASSWORD,  value: postgresql }
+            -         { name: CFG_ADMIN_USERNAME,  value: postgresql }
+            -         { name: CFG_CUSTOM_DATABASE, value: app }
+            -         { name: CFG_CUSTOM_PASSWORD, value: app }
+            -         { name: CFG_CUSTOM_USERNAME, value: app }
+    service:
+        type:         TCP
+        port:         5432
+    storage:
+        path:         /data
+        type:         nfs
+        size:         100Mi
+

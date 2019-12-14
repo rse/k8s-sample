@@ -1,0 +1,28 @@
+##
+##  Sample -- Sample Application
+##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
+##
+
+---
+#   traffic ingress for service
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    namespace: {{ .Values.ns.name }}
+    name: {{ .Values.app.name }}
+    labels:
+        app: {{ .Values.id }}
+        tier: app
+    annotations:
+        traefik.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+    rules:
+        -   http:
+                paths:
+                    -   path: {{ .Values.app.service.url }}
+                        backend:
+                            serviceName: {{ .Values.app.name }}
+                            servicePort: {{ .Values.app.service.port }}
+

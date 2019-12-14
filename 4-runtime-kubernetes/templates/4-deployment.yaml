@@ -1,0 +1,100 @@
+##
+##  Sample -- Sample Application
+##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
+##
+
+---
+#   deployment of pods
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: {{ .Values.ns.name }}
+    name: {{ .Values.app.name }}
+    labels:
+        app: {{ .Values.id }}
+        tier: app
+spec:
+    selector:
+        matchLabels:
+            app: {{ .Values.id }}
+            tier: app
+    replicas: {{ .Values.app.container.replicas }}
+    strategy:
+        type: {{ .Values.app.container.stategy }}
+    template:
+        metadata:
+            labels:
+                app: {{ .Values.id }}
+                tier: app
+        spec:
+            restartPolicy: {{ .Values.app.container.restart }}
+            containers:
+                -   name:  {{ .Values.app.name }}
+                    image: {{ .Values.app.image.name }}:{{ .Values.app.image.tag }}
+                    args:
+{{- if .Values.db.enabled }}
+{{ toYaml .Values.app.container.args.db | indent 24 }}
+{{- else }}
+{{ toYaml .Values.app.container.args.default | indent 24 }}
+{{- end }}
+                    env:
+{{ toYaml .Values.app.container.env | indent 24 }}
+                    ports:
+                        -   name: default
+                            protocol: {{ .Values.app.service.type }}
+                            containerPort: {{ .Values.app.service.port }}
+                    volumeMounts:
+                        -   name: {{ .Values.app.name }}
+                            mountPath: {{ .Values.app.storage.path }}
+            volumes:
+                -   name: {{ .Values.app.name }}
+                    persistentVolumeClaim:
+                        claimName: {{ .Values.app.name }}
+
+---
+{{- if .Values.db.enabled }}
+#   deployment of pods (for database tier)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: {{ .Values.ns.name }}
+    name: {{ .Values.db.name }}
+    labels:
+        app: {{ .Values.id }}
+        tier: db
+spec:
+    selector:
+        matchLabels:
+            app: {{ .Values.id }}
+            tier: db
+    replicas: {{ .Values.db.container.replicas }}
+    strategy:
+        type: {{ .Values.db.container.stategy }}
+    template:
+        metadata:
+            labels:
+                app: {{ .Values.id }}
+                tier: db
+        spec:
+            restartPolicy: {{ .Values.db.container.restart }}
+            containers:
+                -   name:  {{ .Values.db.name }}
+                    image: {{ .Values.db.image.name }}:{{ .Values.db.image.tag }}
+                    args:
+{{ toYaml .Values.db.container.args | indent 24 }}
+                    env:
+{{ toYaml .Values.db.container.env | indent 24 }}
+                    ports:
+                        -   name: default
+                            protocol: {{ .Values.db.service.type }}
+                            containerPort: {{ .Values.db.service.port }}
+                    volumeMounts:
+                        -   name: {{ .Values.db.name }}
+                            mountPath: {{ .Values.db.storage.path }}
+            volumes:
+                -   name: {{ .Values.db.name }}
+                    persistentVolumeClaim:
+                        claimName: {{ .Values.db.name }}
+{{- end }}
+
