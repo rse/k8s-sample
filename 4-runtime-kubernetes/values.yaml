@@ -11,7 +11,7 @@ ns:
     account:          k8s-sample
 
 app:
-    name:             k8s-sample
+    name:             k8s-sample-app
     image:
         name:         "docker.io/engelschall/k8s-sample"
         tag:          "0.9.0-20191214"
