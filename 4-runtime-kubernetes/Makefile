@@ -10,9 +10,6 @@ DATABASE_ENABLED = `echo "$(DATABASE)" | sed -e 's;^pgsql$$;true;' -e 's;^sqlite
 up:
 	@cmd="helm install --set db.enabled=$(DATABASE_ENABLED) k8s-sample ."; echo "$$cmd"; $$cmd
 
-lint:
-	helm lint .
-
 status:
 	helm status k8s-sample
 	kubectl -n k8s-sample get all -l app=k8s-sample
@@ -22,6 +19,9 @@ logs:
 
 down:
 	helm uninstall k8s-sample
+
+lint:
+	helm lint .
 
 package:
 	helm package -d .. .
