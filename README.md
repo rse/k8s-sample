@@ -72,7 +72,7 @@ The **k8s-sample** consts of the following parts:
   After this you can access the application under `http://<hostname>:9090/`.
   You can uninstall the application again with:
 
-  ```
+  ```sh
   $ (cd 3-runtime-docker && make uninstall)
   ```
 
