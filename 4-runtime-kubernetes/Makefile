@@ -19,6 +19,6 @@ logs:
 	kubectl -n k8s-sample logs -l app=k8s-sample
 
 uninstall:
-	helm uninstall k8s-sample;
+	helm uninstall k8s-sample
 	kubectl -n k8s-sample wait --timeout=90s --for=delete namespace/k8s-sample
 
