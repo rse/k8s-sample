@@ -15,7 +15,7 @@ status:
 	kubectl -n k8s-sample get all -l app=k8s-sample
 
 await-install:
-	kubectl -n k8s-sample wait --timeout=90s --for=condition=Available deployment/k8s-sample
+	kubectl -n k8s-sample wait --timeout=90s --for=condition=Available deployment/k8s-sample-app
 
 await-uninstall:
 	kubectl -n k8s-sample wait --timeout=90s --for=delete namespace/k8s-sample
