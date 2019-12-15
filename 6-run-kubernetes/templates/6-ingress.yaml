@@ -5,6 +5,7 @@
 ##
 
 ---
+{{- if .Values.app.service.url }}
 #   traffic ingress for service
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -19,10 +20,16 @@ metadata:
         nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
     rules:
+        {{- if .Values.app.service.host }}
+        -   host: {{ .Values.app.service.host }}
+            http:
+        {{- else }}
         -   http:
+        {{- end }}
                 paths:
-                    -   path: {{ .Values.app.service.url }}
+                    -   path: {{ default "/" .Values.app.service.url }}
                         backend:
                             serviceName: {{ .Values.app.name }}
                             servicePort: {{ .Values.app.service.port }}
+{{- end }}
 
