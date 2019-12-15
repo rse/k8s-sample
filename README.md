@@ -48,15 +48,33 @@ The **k8s-sample** consts of the following parts:
   required in steps 4 and 5. Two Bash scripts help you to provision
   those command-line clients locally under Linux (amd64) systems.
 
-  - For standard contexts:
+  - For local contexts (via `/var/run/docker.sock`):
 
     ```sh
     $ source 1-env-docker/docker.bash
     ```
 
-  - For special msg Project Server (PS) contexts (where `<hostname>` is the
-    hostname of the msg Project Server instance) where the K3S Kubernetes
-    stack was installed with `docker-stack install ase-k3s`:
+  - For remote contexts (via HTTP):
+
+    ```sh
+    $ source 1-env-docker/docker.bash
+    $ export DOCKER_HOST=tcp://<hostname>:2375
+    ```
+
+  - For remote contexts (via HTTPS):
+
+    ```sh
+    $ source 1-env-docker/docker.bash
+    $ export DOCKER_HOST=tcp://<hostname>:2376
+    $ export DOCKER_CERT_PATH="$docker_etcdir"
+    $ export DOCKER_TLS_VERIFY=1
+    $ cp <path-to-ca-cert>     $DOCKER_CERT_PATH/ca.pem
+    $ cp <path-to-client-cert> $DOCKER_CERT_PATH/cert.pem
+    $ cp <path-to-client-key>  $DOCKER_CERT_PATH/key.pem
+    ```
+
+  - For remote msg Project Server (PS) contexts (where `<hostname>` is the
+    hostname of the msg Project Server instance):
 
     ```sh
     $ source 1-env-docker/docker-ps.bash <hostname>
@@ -69,15 +87,23 @@ The **k8s-sample** consts of the following parts:
   in step 6. Two Bash scripts help you to provision those command-line
   clients locally under Linux (amd64) systems.
 
-  - For standard contexts:
+  - For local contexts (via existing `~/.kube/config`):
 
     ```sh
     $ source 2-env-kubernetes/kubernetes.bash
     ```
 
-  - For special msg Project Server (PS) contexts (where `<hostname>` is the
+  - For remote contexts (via custom Kubernetes access configuration):
+
+    ```sh
+    $ source 2-env-kubernetes/kubernetes.bash
+    $ export KUBECONFIG="$kubernetes_etcdir/kubeconfig.yaml"
+    $ cp <path-to-kube-config> $KUBECONFIG
+    ```
+
+  - For remote msg Project Server (PS) contexts (where `<hostname>` is the
     hostname of the msg Project Server instance) where the K3S Kubernetes
-    stack was installed with `docker-stack install ase-k3s`:
+    stack was installed with `docker-stack install ase-k3s` beforehand:
 
     ```sh
     $ source 2-env-kubernetes/kubernetes-ps.bash <hostname>
