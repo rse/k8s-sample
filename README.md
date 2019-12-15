@@ -2,12 +2,23 @@
 k8s-sample &mdash; Kubernetes Sample Application
 ================================================
 
-This is a sample application for testing the deployment on the
-container run-times Docker and Kubernetes (K8S). The application uses a
-Rich-Client architecture, comprised of an HTML5 Single-Page Application
-(SPA) client and a Node.js server and runs under an arbitrary URL
-prefix. The application shows environment information, persists
-data and can control the application process.
+This is a sample application for testing the software deployment on the
+container run-time environments [Docker](https://www.docker.com/) and
+[Kubernetes (K8S)](https://kubernetes.io/).
+
+The application uses a Rich-Client architecture, comprised of an
+[HTML5](https://en.wikipedia.org/wiki/HTML5) Single-Page Application
+(SPA) client and a [Node.js](https://nodejs.org/) server and runs
+under an arbitrary URL prefix. To showcase important run-time
+aspects, the application shows detailed environment information,
+persists data (both locally via [SQLite](https://www.sqlite.org/)
+and remotely via [PostgreSQL](https://www.postgresql.org/)) and can
+control the application process. The application is packaged into a
+[Docker](https://www.docker.com/) container and then this container
+is deployed onto a [Docker](https://www.docker.com/) run-time
+environment via [Docker-Compose](https://docs.docker.com/compose/) and
+onto a [Kubernetes](https://kubernetes.io/) run-time environment via
+[Helm](https://helm.sh/).
 
 ![k8s-sample screenshot](screenshot.png)
 
