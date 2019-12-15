@@ -43,7 +43,8 @@ Short Background
 ----------------
 
 On the application development side, the Docker and Kubernetes worlds
-are primarily driven by four command-line client programs:
+are primarily driven by four command-line client programs this
+**k8s-sample** is using, too:
 
 |            | low-level<br/>(commands) | high-level<br/>(stacks) |
 |----------- | ------------------------ | ----------------------- |
