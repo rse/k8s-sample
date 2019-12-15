@@ -41,7 +41,7 @@ The Parts In Detail
 
 The **k8s-sample** consts of the following parts:
 
-- `1-env-docker`:<br/>
+- **Docker Client Environment**: `1-env-docker`:<br/>
   Here you can find scripts for establishing your local Docker
   environment. In order to build and deploy **k8s-sample**, the
   command-line clients for accessing a Docker run-time environment are
@@ -80,7 +80,7 @@ The **k8s-sample** consts of the following parts:
     $ source 1-env-docker/docker-ps.bash <hostname>
     ```
 
-- `2-env-kubernetes`:<br/>
+- **Kubernetes Client Environment**: `2-env-kubernetes`:<br/>
   Here you can find scripts for establishing your local Kubernetes
   environment. In order to deploy **k8s-sample**, the command-line
   clients for accessing a Kubernetes run-time environment are required
@@ -109,7 +109,7 @@ The **k8s-sample** consts of the following parts:
     $ source 2-env-kubernetes/kubernetes-ps.bash <hostname>
     ```
 
-- `3-app-source`:<br/>
+- **Application Source Code**: `3-app-source`:<br/>
   Here you can find the sources of the **k8s-sample** HTML5 SPA client and
   the corresponding Node.js server. Only used by you in case you want
   to understand and locally test-drive the application itself.
@@ -122,7 +122,7 @@ The **k8s-sample** consts of the following parts:
   After this you can access the application under `https://127.0.0.1:9090/`.
   You can stop the application with `CTRL+C`.
 
-- `4-app-container`:<br/>
+- **Application Container Build Procedure**: `4-app-container`:<br/>
   Here you can find the procedure for building and packaging the
   **k8s-sample** application as a Docker/OCI container for use in both
   step 5 and 6. Only used by you in case you want to understand the
@@ -133,7 +133,7 @@ The **k8s-sample** consts of the following parts:
   $ (cd 3-app-container && make build push)
   ```
 
-- `5-run-docker`:<br/>
+- **Docker Deployment Procedure**: `5-run-docker`:<br/>
   Here you can find the procedure for installing the **k8s-sample**
   container (from step 4) onto a Docker run-time environment via the
   clients docker(1) and docker-compose(1).
@@ -149,7 +149,7 @@ The **k8s-sample** consts of the following parts:
   $ (cd 5-run-docker && make uninstall)
   ```
 
-- `6-run-kubernetes`:<br/>
+- **Kubernetes Deployment Procedure**: `6-run-kubernetes`:<br/>
   Here you can find the procedure for installing the **k8s-sample**
   container (from step 4) onto a Kubernetes run-time environment via the
   clients kubectl(1) and helm(1).
