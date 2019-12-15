@@ -45,7 +45,7 @@ Short Background
 On the application development side, the Docker and Kubernetes worlds
 are primarily driven by four command-line client programs:
 
-| world/client   | low-level<br/>(commands)   | high-level<br/>(stacks) |
+|                | low-level<br/>(commands)   | high-level<br/>(stacks) |
 |--------------- | ----------- | ---------------- |
 | **Docker**     | `docker`    | `docker-compose` |
 | **Kubernetes** | `kubectl`   | `helm`           |
