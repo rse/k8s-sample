@@ -5,9 +5,9 @@
 ##
 
 ---
-#   deployment of pods
+#   stateful set of pods (application tier)
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
     namespace: {{ .Values.ns.name }}
     name: {{ .Values.app.name }}
@@ -19,9 +19,8 @@ spec:
         matchLabels:
             app: {{ .Values.id }}
             tier: app
+    serviceName: {{ .Values.app.name }}
     replicas: {{ .Values.app.container.replicas }}
-    strategy:
-        type: {{ .Values.app.container.stategy }}
     template:
         metadata:
             labels:
@@ -33,13 +32,20 @@ spec:
                 -   name:  {{ .Values.app.name }}
                     image: {{ .Values.app.image.name }}:{{ .Values.app.image.tag }}
                     args:
-{{- if .Values.db.enabled }}
-{{ toYaml .Values.app.container.args.db | indent 24 }}
-{{- else }}
-{{ toYaml .Values.app.container.args.default | indent 24 }}
-{{- end }}
+                        {{- if .Values.db.enabled }}
+                        {{- range .Values.app.container.args.db }}
+                        -   {{ . | quote }}
+                        {{- end }}
+                        {{- else }}
+                        {{- range .Values.app.container.args.default }}
+                        -   {{ . | quote }}
+                        {{- end }}
+                        {{- end }}
                     env:
-{{ toYaml .Values.app.container.env | indent 24 }}
+                        {{- range $key, $val := .Values.app.container.env }}
+                        -   name:  {{ $key | quote }}
+                            value: {{ $val | quote }}
+                        {{- end }}
                     ports:
                         -   name: default
                             protocol: {{ .Values.app.service.type }}
@@ -47,16 +53,35 @@ spec:
                     volumeMounts:
                         -   name: {{ .Values.app.name }}
                             mountPath: {{ .Values.app.storage.path }}
+            {{- if .Values.app.storage.shared }}
             volumes:
                 -   name: {{ .Values.app.name }}
                     persistentVolumeClaim:
                         claimName: {{ .Values.app.name }}
+            {{- end }}
+    {{- if not .Values.app.storage.shared }}
+    volumeClaimTemplates:
+        -   metadata:
+                namespace: {{ .Values.ns.name }}
+                name: {{ .Values.app.name }}
+                labels:
+                    app: {{ .Values.id }}
+                    tier: app
+            spec:
+                accessModes:
+                    - ReadWriteOnce
+                volumeMode: Filesystem
+                storageClassName: {{ .Values.app.storage.type }}
+                resources:
+                    requests:
+                        storage: {{ .Values.app.storage.size }}
+    {{- end }}
 
 ---
 {{- if .Values.db.enabled }}
-#   deployment of pods (for database tier)
+#   stateful set of pods (database tier)
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
     namespace: {{ .Values.ns.name }}
     name: {{ .Values.db.name }}
@@ -68,9 +93,8 @@ spec:
         matchLabels:
             app: {{ .Values.id }}
             tier: db
+    serviceName: {{ .Values.db.name }}
     replicas: {{ .Values.db.container.replicas }}
-    strategy:
-        type: {{ .Values.db.container.stategy }}
     template:
         metadata:
             labels:
@@ -82,9 +106,14 @@ spec:
                 -   name:  {{ .Values.db.name }}
                     image: {{ .Values.db.image.name }}:{{ .Values.db.image.tag }}
                     args:
-{{ toYaml .Values.db.container.args | indent 24 }}
+                        {{- range .Values.db.container.args }}
+                        -   {{ . | quote }}
+                        {{- end }}
                     env:
-{{ toYaml .Values.db.container.env | indent 24 }}
+                        {{- range $key, $val := .Values.db.container.env }}
+                        -   name:  {{ $key | quote }}
+                            value: {{ $val | quote }}
+                        {{- end }}
                     ports:
                         -   name: default
                             protocol: {{ .Values.db.service.type }}
@@ -92,9 +121,28 @@ spec:
                     volumeMounts:
                         -   name: {{ .Values.db.name }}
                             mountPath: {{ .Values.db.storage.path }}
+            {{- if .Values.app.storage.shared }}
             volumes:
                 -   name: {{ .Values.db.name }}
                     persistentVolumeClaim:
                         claimName: {{ .Values.db.name }}
+            {{- end }}
+    {{- if not .Values.db.storage.shared }}
+    volumeClaimTemplates:
+        -   metadata:
+                namespace: {{ .Values.ns.name }}
+                name: {{ .Values.db.name }}
+                labels:
+                    app: {{ .Values.id }}
+                    tier: db
+            spec:
+                accessModes:
+                    - ReadWriteOnce
+                volumeMode: Filesystem
+                storageClassName: {{ .Values.db.storage.type }}
+                resources:
+                    requests:
+                        storage: {{ .Values.db.storage.size }}
+    {{- end }}
 {{- end }}
 

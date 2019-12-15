@@ -35,7 +35,7 @@ $ cd k8s-sample                                         # enter working copy
 $ source 2-env-kubernetes/kubernetes.bash               # etablish Kubernetes environment
 $ export KUBECONFIG="<path-to-kube-config>"             # optionally set path to custom access config
 $ cd 6-run-kubernetes                                   # enter Kubernetes deployment procedure
-$ make install [DATABASE=pgsql]                         # execute Kubernetes deployment procedure
+$ make install [DB_ENABLED=true]                        # execute Kubernetes deployment procedure
 $ open http[s]://<ingress-endpoint>/k8s-sample/         # open deployed application
 ```
 
@@ -48,7 +48,7 @@ $ git clone https://github.com/rse/k8s-sample/          # clone repository
 $ cd k8s-sample                                         # enter working copy
 $ source 2-env-kubernetes/kubernetes-ps.bash <hostname> # etablish Kubernetes environment
 $ cd 6-runtime-kubernetes                               # enter Kubernetes deployment procedure
-$ make install [DATABASE=pgsql]                         # execute Kubernetes deployment procedure
+$ make install [DB_ENABLED=true]                        # execute Kubernetes deployment procedure
 $ open http[s]://<hostname>/ase-k3s/k8s-sample/         # open deployed application
 ```
 
@@ -182,7 +182,7 @@ The **k8s-sample** consts of the following parts:
   clients kubectl(1) and helm(1).
 
   ```sh
-  $ (cd 6-run-kubernetes && make install [DATABASE=pgsql])
+  $ (cd 6-run-kubernetes && make install [DB_ENABLED=true])
   ```
 
   After this you can access the application under `http://<endpoint>/k8s-sample/`

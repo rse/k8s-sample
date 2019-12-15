@@ -5,7 +5,8 @@
 ##
 
 ---
-#   persistent volume claim
+{{- if .Values.app.storage.shared }}
+#   persistent volume claim (application tier)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -15,16 +16,18 @@ metadata:
         app: {{ .Values.id }}
 spec:
     accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
     volumeMode: Filesystem
     storageClassName: {{ .Values.app.storage.type }}
     resources:
         requests:
             storage: {{ .Values.app.storage.size }}
+{{- end }}
 
 ---
 {{- if .Values.db.enabled }}
-#   persistent volume claim (for database)
+{{- if .Values.db.storage.shared }}
+#   persistent volume claim (database tier)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -40,5 +43,6 @@ spec:
     resources:
         requests:
             storage: {{ .Values.db.storage.size }}
+{{- end }}
 {{- end }}
 

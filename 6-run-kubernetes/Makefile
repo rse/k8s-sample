@@ -4,17 +4,25 @@
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 
-DATABASE           = sqlite
-DATABASE_ENABLED   = `echo "$(DATABASE)" | sed -e 's;^pgsql$$;true;' -e 's;^sqlite$$;false;'`
-REPLICAS           = 1
+APP_CONTAINER_REPLICAS = 1
+APP_STORAGE_SHARED     = false
+
+DB_ENABLED             = false
+DB_CONTAINER_REPLICAS  = 1
+DB_STORAGE_SHARED      = false
 
 install:
-	@cmd="helm install"; \
-	    cmd="$$cmd --set db.enabled=$(DATABASE_ENABLED)"; \
-	    cmd="$$cmd --set app.container.replicas=$(REPLICAS)"; \
-	    cmd="$$cmd k8s-sample ."; \
-	    echo "$$cmd"; $$cmd
-	kubectl -n k8s-sample wait --timeout=90s --for=condition=Available deployment/k8s-sample-app
+	helm install \
+	    --set app.container.replicas=$(APP_CONTAINER_REPLICAS) \
+	    --set app.storage.shared=$(APP_STORAGE_SHARED) \
+	    --set db.enabled=$(DB_ENABLED) \
+	    --set db.container.replicas=$(DB_CONTAINER_REPLICAS) \
+	    --set db.storage.shared=$(DB_STORAGE_SHARED) \
+	    k8s-sample .
+	@echo -n "(waiting for new K8S state to be settled... "; \
+	    while [ ".`kubectl -n k8s-sample get -o 'jsonpath={ .status.readyReplicas }' \
+		statefulset k8s-sample-app`" != ".$(APP_CONTAINER_REPLICAS)" ]; do sleep 0.25; done; \
+	    echo "done)"
 
 status:
 	helm status k8s-sample
@@ -25,5 +33,7 @@ logs:
 
 uninstall:
 	helm uninstall k8s-sample
-	kubectl -n k8s-sample wait --timeout=90s --for=delete namespace/k8s-sample
+	@echo -n "(waiting for new K8S state to be settled... "; \
+	    kubectl -n k8s-sample wait --timeout=90s --for=delete namespace/k8s-sample >/dev/null 2>&1; \
+	    echo "done)"
 
