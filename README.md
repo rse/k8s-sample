@@ -20,6 +20,9 @@ environment via [Docker-Compose](https://docs.docker.com/compose/) and
 onto a [Kubernetes](https://kubernetes.io/) run-time environment via
 [Helm](https://helm.sh/).
 
+Sneak Preview
+-------------
+
 ![k8s-sample screenshot](screenshot.png)
 
 Quick Test-Drive
