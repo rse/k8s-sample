@@ -20,6 +20,7 @@ For standard contexts:
 $ git clone https://github.com/rse/k8s-sample/          # clone repository
 $ cd k8s-sample                                         # enter working copy
 $ source 2-env-kubernetes/kubernetes.bash               # etablish Kubernetes environment
+$ export KUBECONFIG="<path-to-kube-config>"             # optionally set path to custom access config
 $ cd 6-run-kubernetes                                   # enter Kubernetes deployment procedure
 $ make install [DATABASE=pgsql]                         # execute Kubernetes deployment procedure
 $ open http[s]://<ingress-endpoint>/k8s-sample/         # open deployed application
@@ -33,7 +34,7 @@ $ ssh root@<hostname> docker-stack install ase-k3s      # install K3S Kubernetes
 $ git clone https://github.com/rse/k8s-sample/          # clone repository
 $ cd k8s-sample                                         # enter working copy
 $ source 2-env-kubernetes/kubernetes-ps.bash <hostname> # etablish Kubernetes environment
-$ cd 4-runtime-kubernetes                               # enter Kubernetes deployment procedure
+$ cd 6-runtime-kubernetes                               # enter Kubernetes deployment procedure
 $ make install [DATABASE=pgsql]                         # execute Kubernetes deployment procedure
 $ open http[s]://<hostname>/ase-k3s/k8s-sample/         # open deployed application
 ```
@@ -99,8 +100,7 @@ The **k8s-sample** consts of the following parts:
 
     ```sh
     $ source 2-env-kubernetes/kubernetes.bash
-    $ export KUBECONFIG="$kubernetes_etcdir/kubeconfig.yaml"
-    $ cp <path-to-kube-config> $KUBECONFIG
+    $ export KUBECONFIG="<path-to-kube-config>"
     ```
 
   - For remote msg Project Server (PS) contexts (where `<hostname>` is the
