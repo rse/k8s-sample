@@ -20,7 +20,8 @@ For standard contexts:
 $ git clone https://github.com/rse/k8s-sample/
 $ cd k8s-sample
 $ source 2-env-kubernetes/kubernetes.bash
-$ (cd 6-run-kubernetes && make install [DATABASE=pgsql])
+$ cd 6-run-kubernetes
+$ make install [DATABASE=pgsql]
 $ open http[s]://<your-kubernetes-ingress-endpoint>/k8s-sample/
 ```
 
@@ -32,7 +33,8 @@ $ ssh root@<hostname> docker-stack install ase-k3s
 $ git clone https://github.com/rse/k8s-sample/
 $ cd k8s-sample
 $ source 2-env-kubernetes/kubernetes-ps.bash <hostname>
-$ (cd 4-runtime-kubernetes && make install [DATABASE=pgsql])
+$ cd 4-runtime-kubernetes
+$ make install [DATABASE=pgsql]
 $ open http[s]://<hostname>/ase-k3s/k8s-sample/
 ```
 
