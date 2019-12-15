@@ -2,7 +2,7 @@
 k8s-sample &mdash; Kubernetes Sample Application
 ================================================
 
-This is a sample application for testing the software deployment on the
+This is a sample application to showcase the oftware deployment on the
 container run-time environments [Docker](https://www.docker.com/) and
 [Kubernetes (K8S)](https://kubernetes.io/).
 
