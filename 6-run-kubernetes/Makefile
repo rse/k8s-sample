@@ -4,11 +4,16 @@
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 
-DATABASE         = sqlite
-DATABASE_ENABLED = `echo "$(DATABASE)" | sed -e 's;^pgsql$$;true;' -e 's;^sqlite$$;false;'`
+DATABASE           = sqlite
+DATABASE_ENABLED   = `echo "$(DATABASE)" | sed -e 's;^pgsql$$;true;' -e 's;^sqlite$$;false;'`
+REPLICAS           = 1
 
 install:
-	@cmd="helm install --set db.enabled=$(DATABASE_ENABLED) k8s-sample ."; echo "$$cmd"; $$cmd
+	@cmd="helm install"; \
+	    cmd="$$cmd --set db.enabled=$(DATABASE_ENABLED)"; \
+	    cmd="$$cmd --set app.container.replicas=$(REPLICAS)"; \
+	    cmd="$$cmd k8s-sample ."; \
+	    echo "$$cmd"; $$cmd
 	kubectl -n k8s-sample wait --timeout=90s --for=condition=Available deployment/k8s-sample-app
 
 status:
