@@ -17,25 +17,25 @@ Quick Test-Drive
 For standard contexts:
 
 ```sh
-$ git clone https://github.com/rse/k8s-sample/
-$ cd k8s-sample
-$ source 2-env-kubernetes/kubernetes.bash
-$ cd 6-run-kubernetes
-$ make install [DATABASE=pgsql]
-$ open http[s]://<your-kubernetes-ingress-endpoint>/k8s-sample/
+$ git clone https://github.com/rse/k8s-sample/          # clone repository
+$ cd k8s-sample                                         # enter working copy
+$ source 2-env-kubernetes/kubernetes.bash               # etablish Kubernetes environment
+$ cd 6-run-kubernetes                                   # enter Kubernetes deployment procedure
+$ make install [DATABASE=pgsql]                         # execute Kubernetes deployment procedure
+$ open http[s]://<ingress-endpoint>/k8s-sample/         # open deployed application
 ```
 
 For special msg Project Server (PS) contexts (where `<hostname>` is the
 FQDN of the msg Project Server instance):
 
 ```sh
-$ ssh root@<hostname> docker-stack install ase-k3s
-$ git clone https://github.com/rse/k8s-sample/
-$ cd k8s-sample
-$ source 2-env-kubernetes/kubernetes-ps.bash <hostname>
-$ cd 4-runtime-kubernetes
-$ make install [DATABASE=pgsql]
-$ open http[s]://<hostname>/ase-k3s/k8s-sample/
+$ ssh root@<hostname> docker-stack install ase-k3s      # install K3S Kubernetes distribution
+$ git clone https://github.com/rse/k8s-sample/          # clone repository
+$ cd k8s-sample                                         # enter working copy
+$ source 2-env-kubernetes/kubernetes-ps.bash <hostname> # etablish Kubernetes environment
+$ cd 4-runtime-kubernetes                               # enter Kubernetes deployment procedure
+$ make install [DATABASE=pgsql]                         # execute Kubernetes deployment procedure
+$ open http[s]://<hostname>/ase-k3s/k8s-sample/         # open deployed application
 ```
 
 The Parts In Detail
