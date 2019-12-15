@@ -2,17 +2,16 @@
 k8s-sample &mdash; Kubernetes Sample Application
 ================================================
 
-This is a sample application to showcase the oftware deployment on the
-container run-time environments [Docker](https://www.docker.com/) and
-[Kubernetes (K8S)](https://kubernetes.io/).
-
-The application uses a Rich-Client architecture, comprised of an
+This is a sample application to showcase the oftware deployment on
+the container run-time environments [Docker](https://www.docker.com/)
+and [Kubernetes (K8S)](https://kubernetes.io/). The
+application uses a Rich-Client architecture, comprised of an
 [HTML5](https://en.wikipedia.org/wiki/HTML5) Single-Page Application
 (SPA) client and a [Node.js](https://nodejs.org/) server and runs
-under an arbitrary URL prefix. To showcase important run-time
-aspects, the application shows detailed environment information,
-persists data (both locally via [SQLite](https://www.sqlite.org/)
-and remotely via [PostgreSQL](https://www.postgresql.org/)) and can
+under an arbitrary URL prefix. To showcase important run-time aspects,
+the application shows detailed environment information, persists data
+(both locally via [SQLite](https://www.sqlite.org/) and remotely
+via [PostgreSQL](https://www.postgresql.org/)) and allows one to
 control the application process. The application is packaged into a
 [Docker](https://www.docker.com/) container and then this container
 is deployed onto a [Docker](https://www.docker.com/) run-time
