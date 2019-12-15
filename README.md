@@ -132,7 +132,7 @@ The **k8s-sample** consts of the following parts:
   Docker Hub.
 
   ```sh
-  $ (cd 3-app-container && make build push)
+  $ (cd 4-app-container && make build push)
   ```
 
 - **Docker Deployment Procedure**: `5-run-docker`<br/>
