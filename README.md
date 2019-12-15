@@ -45,8 +45,8 @@ The **k8s-sample** consts of the following parts:
   Here you can find scripts for establishing your local Docker
   environment. In order to build and deploy **k8s-sample**, the
   command-line clients for accessing a Docker run-time environment are
-  required. Two Bash scripts help you to provision those command-line
-  clients locally under Linux (amd64) systems.
+  required in steps 4 and 5. Two Bash scripts help you to provision
+  those command-line clients locally under Linux (amd64) systems.
 
   - For standard contexts:
 
@@ -64,9 +64,9 @@ The **k8s-sample** consts of the following parts:
 
 - `2-env-kubernetes`:<br/>
   Here you can find scripts for establishing your local Kubernetes
-  environment. In order to build and deploy **k8s-sample**, the
-  command-line clients for accessing a Kubernetes run-time environment are
-  required. Two Bash scripts help you to provision those command-line
+  environment. In order to deploy **k8s-sample**, the command-line
+  clients for accessing a Kubernetes run-time environment are required
+  in step 6. Two Bash scripts help you to provision those command-line
   clients locally under Linux (amd64) systems.
 
   - For standard contexts:
@@ -98,17 +98,19 @@ The **k8s-sample** consts of the following parts:
 
 - `4-app-container`:<br/>
   Here you can find the procedure for building and packaging the
-  **k8s-sample** application as a Docker/OCI container. Only used by you in
-  case you want to understand the Docker/OCI container packaging or
-  build and push the container to Docker Hub.
+  **k8s-sample** application as a Docker/OCI container for use in both
+  step 5 and 6. Only used by you in case you want to understand the
+  Docker/OCI container packaging or build and push the container to
+  Docker Hub.
 
   ```sh
   $ (cd 3-app-container && make build push)
   ```
 
 - `5-run-docker`:<br/>
-  Here you can find the procedure for installing **k8s-sample** onto
-  a Docker run-time environment via the clients docker(1) and docker-compose(1).
+  Here you can find the procedure for installing the **k8s-sample**
+  container (from step 4) onto a Docker run-time environment via the
+  clients docker(1) and docker-compose(1).
 
   ```sh
   $ (cd 5-run-docker && make install [DATABASE=pgsql])
@@ -122,8 +124,9 @@ The **k8s-sample** consts of the following parts:
   ```
 
 - `6-run-kubernetes`:<br/>
-  Here you can find the procedure for installing **k8s-sample** onto
-  a Kubernetes run-time environment via the clients kubectl(1) and helm(1).
+  Here you can find the procedure for installing the **k8s-sample**
+  container (from step 4) onto a Kubernetes run-time environment via the
+  clients kubectl(1) and helm(1).
 
   ```sh
   $ (cd 6-run-kubernetes && make install [DATABASE=pgsql])
