@@ -2,7 +2,7 @@
 k8s-sample &mdash; Kubernetes Sample Application
 ================================================
 
-This is a sample application to showcase the oftware deployment on
+This is a sample application to showcase the software deployment on
 the container run-time environments [Docker](https://www.docker.com/)
 and [Kubernetes (K8S)](https://kubernetes.io/). The
 application uses a Rich-Client architecture, comprised of an
