@@ -11,10 +11,18 @@ DB_ENABLED             = false
 DB_CONTAINER_REPLICAS  = 1
 DB_STORAGE_SHARED      = false
 
-install:
+#
+#  INSTALLATION
+#
+
+install: install-ns install-app
+
+install-ns:
 	bash etc/k8s-util.bash namespace k8s-sample create
 	bash etc/k8s-util.bash namespace-admin k8s-sample k8s-sample create
 	bash etc/k8s-util.bash kubeconfig k8s-sample k8s-sample k8s-sample >.kubeconfig
+
+install-app:
 	KUBECONFIG=.kubeconfig \
 	    helm install -n k8s-sample \
 	    --set app.container.replicas=$(APP_CONTAINER_REPLICAS) \
@@ -28,6 +36,10 @@ install:
 		statefulset k8s-sample-app`" != ".$(APP_CONTAINER_REPLICAS)" ]; do sleep 0.25; done; \
 	    echo "done)"
 
+#
+#  STATUS
+#
+
 status:
 	KUBECONFIG=.kubeconfig \
 	    helm -n k8s-sample status k8s-sample
@@ -36,11 +48,19 @@ status:
 logs:
 	kubectl -n k8s-sample logs -l pkg=k8s-sample
 
-uninstall:
+#
+#  UNINSTALLATION
+#
+
+uninstall: uninstall-app uninstall-ns
+
+uninstall-app:
 	KUBECONFIG=.kubeconfig \
 	    helm -n k8s-sample uninstall k8s-sample
 	@echo -n "(waiting for new K8S state to be settled... "; \
 	    kubectl -n k8s-sample wait --timeout=90s --for=delete statefulset/k8s-sample-app >/dev/null 2>&1; \
 	    echo "done)"
+
+uninstall-ns:
 	bash etc/k8s-util.bash namespace k8s-sample delete
 
