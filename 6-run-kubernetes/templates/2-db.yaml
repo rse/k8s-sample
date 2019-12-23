@@ -1,0 +1,119 @@
+##
+##  k8s-sample -- Kubernetes Sample Application
+##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
+##
+
+{{- if .Values.db.enabled }}
+
+---
+#   service for pods
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.db.name }}
+spec:
+    type: ClusterIP
+    selector:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.db.name }}
+    ports:
+        -   protocol: {{ .Values.db.service.type }}
+            port: {{ .Values.db.service.port }}
+            targetPort: default
+
+---
+#   stateful set of pods
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.db.name }}
+spec:
+    selector:
+        matchLabels:
+            pkg: {{ template "package.fullname" . }}
+            tier: {{ .Values.db.name }}
+    serviceName: {{ .Values.db.name }}
+    replicas: {{ .Values.db.container.replicas }}
+    template:
+        metadata:
+            labels:
+                pkg: {{ template "package.fullname" . }}
+                tier: {{ .Values.db.name }}
+        spec:
+            restartPolicy: {{ .Values.db.container.restart }}
+            containers:
+                -   name:  {{ template "package.fullname" . }}-{{ .Values.db.name }}
+                    image: {{ .Values.db.image.name }}:{{ .Values.db.image.tag }}
+                    args:
+                        {{- range .Values.db.container.args }}
+                        -   {{ . | quote }}
+                        {{- end }}
+                    env:
+                        {{- range $key, $val := .Values.db.container.env }}
+                        -   name:  {{ $key | quote }}
+                            value: {{ $val | quote }}
+                        {{- end }}
+                    ports:
+                        -   name: default
+                            protocol: {{ .Values.db.service.type }}
+                            containerPort: {{ .Values.db.service.port }}
+                    volumeMounts:
+                        -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+                            mountPath: {{ .Values.db.storage.path }}
+            {{- if .Values.db.storage.shared }}
+            volumes:
+                -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+                    persistentVolumeClaim:
+                        claimName: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+            {{- end }}
+    {{- if not .Values.db.storage.shared }}
+    volumeClaimTemplates:
+        -   metadata:
+                namespace: {{ template "package.namespace" . }}
+                name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+                labels:
+                    pkg: {{ template "package.fullname" . }}
+                    tier: {{ .Values.db.name }}
+            spec:
+                accessModes:
+                    - ReadWriteOnce
+                volumeMode: Filesystem
+                storageClassName: {{ .Values.db.storage.type }}
+                resources:
+                    requests:
+                        storage: {{ .Values.db.storage.size }}
+    {{- end }}
+
+---
+{{- if .Values.db.storage.shared }}
+#   persistent volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.db.name }}
+spec:
+    accessModes:
+        - ReadWriteOnce
+    volumeMode: Filesystem
+    storageClassName: {{ .Values.db.storage.type }}
+    resources:
+        requests:
+            storage: {{ .Values.db.storage.size }}
+{{- end }}
+
+
+{{- end }}
+

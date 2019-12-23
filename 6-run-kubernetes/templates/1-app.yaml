@@ -1,0 +1,149 @@
+##
+##  k8s-sample -- Kubernetes Sample Application
+##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
+##
+
+---
+{{- if .Values.app.service.url }}
+#   traffic ingress for service
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.app.name }}
+    annotations:
+        traefik.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+    rules:
+        {{- if .Values.app.service.host }}
+        -   host: {{ .Values.app.service.host }}
+            http:
+        {{- else }}
+        -   http:
+        {{- end }}
+                paths:
+                    -   path: {{ default "/" .Values.app.service.url }}
+                        backend:
+                            serviceName: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+                            servicePort: {{ .Values.app.service.port }}
+{{- end }}
+
+---
+#   service for pods
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.app.name }}
+spec:
+    type: ClusterIP
+    selector:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.app.name }}
+    ports:
+        -   protocol: {{ .Values.app.service.type }}
+            port: {{ .Values.app.service.port }}
+            targetPort: default
+
+---
+#   stateful set of pods
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.app.name }}
+spec:
+    selector:
+        matchLabels:
+            pkg: {{ template "package.fullname" . }}
+            tier: {{ .Values.app.name }}
+    serviceName: {{ .Values.app.name }}
+    replicas: {{ .Values.app.container.replicas }}
+    template:
+        metadata:
+            labels:
+                pkg: {{ template "package.fullname" . }}
+                tier: {{ .Values.app.name }}
+        spec:
+            restartPolicy: {{ .Values.app.container.restart }}
+            containers:
+                -   name:  {{ template "package.fullname" . }}-{{ .Values.app.name }}
+                    image: {{ .Values.app.image.name }}:{{ .Values.app.image.tag }}
+                    args:
+                        {{- if .Values.db.enabled }}
+                        {{- range .Values.app.container.args.db }}
+                        -   {{ . | quote }}
+                        {{- end }}
+                        {{- else }}
+                        {{- range .Values.app.container.args.default }}
+                        -   {{ . | quote }}
+                        {{- end }}
+                        {{- end }}
+                    env:
+                        {{- range $key, $val := .Values.app.container.env }}
+                        -   name:  {{ $key | quote }}
+                            value: {{ $val | quote }}
+                        {{- end }}
+                    ports:
+                        -   name: default
+                            protocol: {{ .Values.app.service.type }}
+                            containerPort: {{ .Values.app.service.port }}
+                    volumeMounts:
+                        -   name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+                            mountPath: {{ .Values.app.storage.path }}
+            {{- if .Values.app.storage.shared }}
+            volumes:
+                -   name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+                    persistentVolumeClaim:
+                        claimName: {{ .Values.app.name }}
+            {{- end }}
+    {{- if not .Values.app.storage.shared }}
+    volumeClaimTemplates:
+        -   metadata:
+                namespace: {{ template "package.namespace" . }}
+                name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+                labels:
+                    pkg: {{ template "package.fullname" . }}
+                    tier: {{ .Values.app.name }}
+            spec:
+                accessModes:
+                    - ReadWriteOnce
+                volumeMode: Filesystem
+                storageClassName: {{ .Values.app.storage.type }}
+                resources:
+                    requests:
+                        storage: {{ .Values.app.storage.size }}
+    {{- end }}
+
+---
+{{- if .Values.app.storage.shared }}
+#   persistent volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.app.name }}
+spec:
+    accessModes:
+        - ReadWriteMany
+    volumeMode: Filesystem
+    storageClassName: {{ .Values.app.storage.type }}
+    resources:
+        requests:
+            storage: {{ .Values.app.storage.size }}
+{{- end }}
+

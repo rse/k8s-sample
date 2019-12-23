@@ -4,14 +4,13 @@
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 
-id:                   k8s-sample
-
-ns:
-    name:             k8s-sample
-    account:          k8s-sample
+package:
+    namespace:        null
+    name:             null
+    fullname:         null
 
 app:
-    name:             k8s-sample-app
+    name:             app
     image:
         name:         "docker.io/engelschall/k8s-sample"
         tag:          "0.9.1-20191214"
@@ -34,7 +33,7 @@ app:
 
 db:
     enabled:          false
-    name:             k8s-sample-db
+    name:             db
     image:
         name:         "docker.msg.team/ps/std-postgresql"
         tag:          "12.1-20191214"

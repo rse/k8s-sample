@@ -12,7 +12,11 @@ DB_CONTAINER_REPLICAS  = 1
 DB_STORAGE_SHARED      = false
 
 install:
-	helm install \
+	bash etc/k8s-util.bash namespace k8s-sample create
+	bash etc/k8s-util.bash namespace-admin k8s-sample k8s-sample create
+	bash etc/k8s-util.bash kubeconfig k8s-sample k8s-sample k8s-sample >.kubeconfig
+	KUBECONFIG=.kubeconfig \
+	    helm install -n k8s-sample \
 	    --set app.container.replicas=$(APP_CONTAINER_REPLICAS) \
 	    --set app.storage.shared=$(APP_STORAGE_SHARED) \
 	    --set db.enabled=$(DB_ENABLED) \
@@ -25,15 +29,18 @@ install:
 	    echo "done)"
 
 status:
-	helm status k8s-sample
-	kubectl -n k8s-sample get all -l app=k8s-sample
+	KUBECONFIG=.kubeconfig \
+	    helm -n k8s-sample status k8s-sample
+	kubectl -n k8s-sample get all -l pkg=k8s-sample
 
 logs:
-	kubectl -n k8s-sample logs -l app=k8s-sample
+	kubectl -n k8s-sample logs -l pkg=k8s-sample
 
 uninstall:
-	helm uninstall k8s-sample
+	KUBECONFIG=.kubeconfig \
+	    helm -n k8s-sample uninstall k8s-sample
 	@echo -n "(waiting for new K8S state to be settled... "; \
-	    kubectl -n k8s-sample wait --timeout=90s --for=delete namespace/k8s-sample >/dev/null 2>&1; \
+	    kubectl -n k8s-sample wait --timeout=90s --for=delete statefulset/k8s-sample-app >/dev/null 2>&1; \
 	    echo "done)"
+	bash etc/k8s-util.bash namespace k8s-sample delete
 
