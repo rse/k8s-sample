@@ -12,6 +12,8 @@ module.exports = (server /*, knex */) => {
         path:    "/api/info",
         handler: async (request, h) => {
             const r = { host: {}, net: {}, proc: {}, env: [], header: [], peer: {} }
+
+            /*  determine host information  */
             r.host = {
                 hostname: os.hostname(),
                 arch:     os.arch(),
@@ -19,12 +21,17 @@ module.exports = (server /*, knex */) => {
                 type:     os.type(),
                 release:  os.release()
             }
+
+            /*  determine network information  */
             const ifaces = os.networkInterfaces()
             Object.keys(ifaces).forEach((iface) => {
                 r.net[iface] = ifaces[iface].map((info) => info.cidr).join(", ")
             })
+
+            /*  determine process information  */
             const argv = process.execArgv.concat(process.argv)
-                .map((arg) => arg.match(/^\S+$/) ? arg : `"${arg.replace(/"/g, "\"")}"`).join(" ")
+                .map((arg) => arg.match(/^\S+$/) ? arg : `"${arg.replace(/"/g, "\"")}"`)
+                .join(" ")
             r.proc = {
                 argv:     argv,
                 cwd:      process.cwd(),
@@ -34,17 +41,26 @@ module.exports = (server /*, knex */) => {
                 uptime:   Math.floor(process.uptime()),
                 rss:      process.memoryUsage().rss
             }
+
+            /*  determine environment information  */
             Object.keys(process.env).forEach((name) => {
                 r.env.push({ name, value: process.env[name] })
             })
+
+            /*  determine HTTP-header information  */
             Object.keys(request.headers).forEach((name) => {
                 r.header.push({ name, value: request.headers[name] })
             })
+
+            /*  determine peer information  */
             r.peer = {
                 local:  request.info.host,
                 remote: `${request.info.remoteAddress}:${request.info.remotePort}`
             }
+
+            /*  determine container unique id  */
             r.id = `${r.proc.pid}@${r.host.hostname}`
+
             return r
         }
     })
