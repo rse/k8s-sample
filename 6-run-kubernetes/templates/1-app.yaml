@@ -106,7 +106,7 @@ spec:
             volumes:
                 -   name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
                     persistentVolumeClaim:
-                        claimName: {{ .Values.app.name }}
+                        claimName: {{ template "package.fullname" . }}-{{ .Values.app.name }}
             {{- end }}
     {{- if not .Values.app.storage.shared }}
     volumeClaimTemplates:
