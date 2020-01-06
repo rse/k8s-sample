@@ -13,7 +13,7 @@ app:
     name:             app
     image:
         name:         "docker.io/engelschall/k8s-sample"
-        tag:          "0.9.1-20191214"
+        tag:          "0.9.2-20200106"
     container:
         replicas:     1
         restart:      Always
@@ -36,7 +36,7 @@ db:
     name:             db
     image:
         name:         "docker.msg.team/ps/std-postgresql"
-        tag:          "12.1-20191214"
+        tag:          "12.1-20191229"
     container:
         replicas:     1
         restart:      Always

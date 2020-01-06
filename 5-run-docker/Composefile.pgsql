@@ -11,7 +11,7 @@ services:
     #   the k8s-sample application
     k8s-sample-app:
         container_name: k8s-sample-app
-        image:          docker.io/engelschall/k8s-sample:0.9.1-20191214
+        image:          docker.io/engelschall/k8s-sample:0.9.2-20200106
         command:        -a 0.0.0.0 -p 9090 -d pg:postgres://app:app@db/app -w 10
         init:           true
         restart:        always
@@ -27,7 +27,7 @@ services:
     #   the k8s-sample database
     k8s-sample-db:
         container_name: k8s-sample-db
-        image:          docker.msg.team/ps/std-postgresql:12.1-20191214
+        image:          docker.msg.team/ps/std-postgresql:12.1-20191229
         init:           true
         restart:        always
         environment:
