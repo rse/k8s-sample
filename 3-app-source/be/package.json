@@ -14,12 +14,12 @@
         "babel-eslint":               "10.0.3"
     },
     "dependencies": {
-        "@hapi/hapi":                 "18.4.0",
+        "@hapi/hapi":                 "19.0.2",
         "@hapi/inert":                "6.0.0",
         "@hapi/boom":                 "9.0.0",
         "yargs":                      "15.1.0",
-        "knex":                       "0.20.6",
-        "pg":                         "7.17.0",
+        "knex":                       "0.20.7",
+        "pg":                         "7.17.1",
         "sqlite3":                    "4.1.1",
         "pure-uuid":                  "1.5.8"
     },
