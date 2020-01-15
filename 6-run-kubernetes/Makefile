@@ -64,3 +64,10 @@ uninstall-app:
 uninstall-ns:
 	bash etc/k8s-util.bash namespace k8s-sample delete
 
+#
+#  PACKAGING
+#
+
+package:
+	helm package .
+
