@@ -21,7 +21,7 @@
         "knex":                       "0.20.8",
         "pg":                         "7.17.1",
         "sqlite3":                    "4.1.1",
-        "pure-uuid":                  "1.5.8"
+        "pure-uuid":                  "1.6.0"
     },
     "scripts": {
         "postinstall":                "npx modclean -p . -r -P -n default:safe,default:caution",
