@@ -60,8 +60,8 @@ kubernetes_std () {
     fi
 
     #   install Bash tab completions
-    source <(kubectl completion bash)
-    source <(helm completion bash)
+    source <(KUBECONFIG=/dev/null kubectl completion bash)
+    source <(KUBECONFIG=/dev/null helm completion bash)
 }
 
 kubernetes_std ${1+"$@"}
