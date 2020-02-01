@@ -53,6 +53,6 @@ db:
     storage:
         path:         /data
         type:         nfs
-        size:         100M
+        size:         100Mi
         shared:       false
 
