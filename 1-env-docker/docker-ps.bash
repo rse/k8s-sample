@@ -16,7 +16,7 @@ source "$(dirname ${BASH_SOURCE})/docker.bash"
 docker_ps () {
     #   determine server
     if [[ $# -ne 1 ]]; then
-        echo "** ERROR: missing hostname or address of ProjectServer (PS)" 1>&2
+        echo "** USAGE: source docker-ps.bash <hostname>" 1>&2
         return 1
     fi
     local server="$1"

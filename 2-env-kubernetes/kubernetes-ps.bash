@@ -4,7 +4,7 @@
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 ##  Usage:
-##  | source kubernetes-ps.bash <hostname-or-address> [<k3s-admin-password>]
+##  | source kubernetes-ps.bash <hostname-or-address> [<user-name> [<context-name>]]
 ##  | kubectl [...]
 ##  | helm [...]
 ##
@@ -15,12 +15,13 @@ source "$(dirname ${BASH_SOURCE})/kubernetes.bash"
 #   provision for ProjectServer (PS) context
 kubernetes_ps () {
     #   determine server
-    if [[ $# -ne 1 && $# -ne 2 ]]; then
-        echo "** ERROR: missing hostname or address of ProjectServer (PS)" 1>&2
+    if [[ $# -lt 1 || $# -gt 3 ]]; then
+        echo "** USAGE: source kubernetes-ps.bash <hostname-or-address> [<user-name> [<context-name>]]" 1>&2
         return 1
     fi
-    local server="$1"
-    local password="${2-admin}"
+    local server=$1
+    local username=${2-"admin"}
+    local contextname=${3-""}
 
     #   set kubectl(1) environment variables
     local kubernetes_basedir="$(cd $(dirname ${BASH_SOURCE}) && pwd)/kubernetes.d"
@@ -31,7 +32,7 @@ kubernetes_ps () {
     #   optionally fetch Kubernetes access configuration
     if [[ ! -f "$KUBECONFIG" ]]; then
         echo "++ fetching kubectl(1) access configuration"
-        ssh -q -t root@$server "docker-stack exec ase-k3s kubeconfig admin ${password}" >"$KUBECONFIG"
+        ssh -q -t root@$server docker-stack exec ase-k3s kubeconfig "${username}" "${contextname}" >"$KUBECONFIG"
     fi
 }
 
