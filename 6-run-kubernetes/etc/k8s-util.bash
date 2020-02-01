@@ -1,7 +1,8 @@
 #!/bin/bash
 ##
 ##  k8s-util.bash -- Kubernetes (K8S) Utility
-##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Copyright (c) 2019-2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 
 #   a temporary storage area

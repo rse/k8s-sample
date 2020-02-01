@@ -1,5 +1,7 @@
 ##
-##  k8s-util.yaml -- Kubernetes (K8S) YAML Configuration Snippets
+##  k8s-util.yaml -- Kubernetes (K8S) Utility
+##  Copyright (c) 2019-2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 
 %!namespace

@@ -1,6 +1,6 @@
 ##
 ##  kubernetes-ps.bash -- Kubernetes CLI provisioning (for ProjectServer contexts)
-##  Copyright (c) 2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Copyright (c) 2019-2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 ##  Usage:
