@@ -56,16 +56,3 @@ db:
         size:         100M
         shared:       false
 
-cockroach:
-    statefulset:
-        resources:
-            requests:     4Gi
-            limits:       4Gi
-    conf:
-        cache:            1Gi
-        max-sql-memory:   1Gi
-    storage:
-        persistentVolume:
-            size:         100Mi
-            storageClass: nfs
-

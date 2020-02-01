@@ -20,9 +20,3 @@ maintainers:
         email:      rse@engelschall.com
         url:        http://engelschall.com
 
-dependencies:
-    -   repository: https://kubernetes-charts.storage.googleapis.com/
-        name:       cockroachdb
-        version:    3.0.2
-        condition:  db.enabled
-
