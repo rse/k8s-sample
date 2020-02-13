@@ -9,17 +9,17 @@
         "eslint-config-standard":     "14.1.0",
         "eslint-plugin-standard":     "4.0.1",
         "eslint-plugin-promise":      "4.2.1",
-        "eslint-plugin-import":       "2.20.0",
+        "eslint-plugin-import":       "2.20.1",
         "eslint-plugin-node":         "11.0.0",
         "babel-eslint":               "10.0.3"
     },
     "dependencies": {
-        "@hapi/hapi":                 "19.0.5",
+        "@hapi/hapi":                 "19.1.0",
         "@hapi/inert":                "6.0.1",
         "@hapi/boom":                 "9.0.0",
         "yargs":                      "15.1.0",
-        "knex":                       "0.20.8",
-        "pg":                         "7.17.1",
+        "knex":                       "0.20.9",
+        "pg":                         "7.18.1",
         "sqlite3":                    "4.1.1",
         "pure-uuid":                  "1.6.0"
     },
