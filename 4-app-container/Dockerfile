@@ -7,11 +7,11 @@
 #   container information
 ARG         IMAGE_PREFIX=docker.io/engelschall/
 ARG         IMAGE_NAME=k8s-sample
-ARG         IMAGE_VERSION=0.9.2
-ARG         IMAGE_RELEASE=20200126
+ARG         IMAGE_VERSION=0.9.3
+ARG         IMAGE_RELEASE=20200213
 
 #   start with the standard Node.js container image
-FROM        node:12.14.1-alpine
+FROM        node:12.16-alpine
 
 #   update system
 RUN         apk update && \

@@ -32,21 +32,23 @@ For standard contexts:
 ```sh
 $ git clone https://github.com/rse/k8s-sample/          # clone repository
 $ cd k8s-sample                                         # enter working copy
-$ source 2-env-kubernetes/kubernetes.bash               # etablish Kubernetes environment
-$ export KUBECONFIG="<path-to-kube-config>"             # optionally set path to custom access config
+$ (cd 1-env-util && make)                               # etablish environment utility
+$ bash   2-env-setup/1-setup-std.bash <kubeconfig-file> # setup environment
+$ source 2-env-setup/2-env.bash                         # attach environment
 $ cd 6-run-kubernetes                                   # enter Kubernetes deployment procedure
 $ make install [DB_ENABLED=true]                        # execute Kubernetes deployment procedure
 $ open http[s]://<ingress-endpoint>/k8s-sample/         # open deployed application
 ```
 
-For special msg Project Server (PS) contexts (where `<hostname>` is the
-FQDN of the msg Project Server instance):
+For special msg Project Server (PS) contexts
+(where `<hostname>` is the FQDN of the msg Project Server instance):
 
 ```sh
-$ ssh root@<hostname> docker-stack install ase-k3s      # install K3S Kubernetes distribution
 $ git clone https://github.com/rse/k8s-sample/          # clone repository
 $ cd k8s-sample                                         # enter working copy
-$ source 2-env-kubernetes/kubernetes-ps.bash <hostname> # etablish Kubernetes environment
+$ (cd 1-env-util && make)                               # etablish environment utility
+$ bash   2-env-setup/1-setup-ps.bash <hostname>         # setup environment
+$ source 2-env-setup/2-env.bash                         # attach environment
 $ cd 6-runtime-kubernetes                               # enter Kubernetes deployment procedure
 $ make install [DB_ENABLED=true]                        # execute Kubernetes deployment procedure
 $ open http[s]://<hostname>/ase-k3s/k8s-sample/         # open deployed application
@@ -67,73 +69,36 @@ are primarily driven by four command-line client programs this
 The Parts In Detail
 -------------------
 
-The **k8s-sample** consts of the following parts:
+The **k8s-sample** consists of the following parts:
 
-- **Docker Client Environment**: `1-env-docker`<br/>
-  Here you can find scripts for establishing your local Docker
-  environment. In order to build and deploy **k8s-sample**, the
-  command-line clients for accessing a Docker run-time environment are
-  required in steps 4 and 5. Two Bash scripts help you to provision
-  those command-line clients locally under Linux (amd64) systems.
-
-  - For local contexts (via `/var/run/docker.sock`):
+- **Kubernetes Environment Utility**: `1-env-util`<br/>
+  Here you can find a procedure for locally installing the companion
+  [**k8s-util(1)**](https://github.com/rse/k8s-util) utility. It ensures
+  that the command-line clients for accessing a Docker and Kubernetes
+  run-time environment are available and helps managing the
+  run-time access credentials in the part `2-env-setup`:
 
     ```sh
-    $ source 1-env-docker/docker.bash
+    $ (cd 1-env-util && make)
     ```
 
-  - For remote contexts (via HTTP):
+- **Kubernetes Environment Setup**: `2-env-setup`<br/>
+  Here you can find the scripts for establishing and attaching to the
+  Kubernetes run-time environment.
+
+  - For standard contexts (arbitrary Docker and Kubernetes):
 
     ```sh
-    $ source 1-env-docker/docker.bash
-    $ export DOCKER_HOST=tcp://<hostname>:2375
+    $ bash   2-env-setup/1-setup-std.bash
+    $ source 2-env-setup/2-env.bash
     ```
 
-  - For remote contexts (via HTTPS):
-
-    ```sh
-    $ source 1-env-docker/docker.bash
-    $ export DOCKER_HOST=tcp://<hostname>:2376
-    $ export DOCKER_CERT_PATH="$docker_etcdir"
-    $ export DOCKER_TLS_VERIFY=1
-    $ cp <path-to-ca-cert>     $DOCKER_CERT_PATH/ca.pem
-    $ cp <path-to-client-cert> $DOCKER_CERT_PATH/cert.pem
-    $ cp <path-to-client-key>  $DOCKER_CERT_PATH/key.pem
-    ```
-
-  - For remote msg Project Server (PS) contexts (where `<hostname>` is the
+  - For msg Project Server (PS) contexts (where `<hostname>` is the
     hostname of the msg Project Server instance):
 
     ```sh
-    $ source 1-env-docker/docker-ps.bash <hostname>
-    ```
-
-- **Kubernetes Client Environment**: `2-env-kubernetes`<br/>
-  Here you can find scripts for establishing your local Kubernetes
-  environment. In order to deploy **k8s-sample**, the command-line
-  clients for accessing a Kubernetes run-time environment are required
-  in step 6. Two Bash scripts help you to provision those command-line
-  clients locally under Linux (amd64) systems.
-
-  - For local contexts (via existing `~/.kube/config`):
-
-    ```sh
-    $ source 2-env-kubernetes/kubernetes.bash
-    ```
-
-  - For remote contexts (via custom Kubernetes access configuration):
-
-    ```sh
-    $ source 2-env-kubernetes/kubernetes.bash
-    $ export KUBECONFIG="<path-to-kube-config>"
-    ```
-
-  - For remote msg Project Server (PS) contexts (where `<hostname>` is the
-    hostname of the msg Project Server instance) where the K3S Kubernetes
-    stack was installed with `docker-stack install ase-k3s` beforehand:
-
-    ```sh
-    $ source 2-env-kubernetes/kubernetes-ps.bash <hostname>
+    $ bash   2-env-setup/1-setup-ps.bash <hostname>
+    $ source 2-env-setup/2-env.bash
     ```
 
 - **Application Source Code**: `3-app-source`<br/>
