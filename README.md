@@ -25,8 +25,8 @@ application locally, building the application into a container
 and deploying the container onto the run-time environments. On
 the client side all this just needs a plain Linux/amd64 system
 (e.g. [use Windows Subsystem for Linux (WSL) under Windows 10](https://github.com/rse/unix-under-windows))
-with the git(1) and curl(1) programs installed. Everything is performed
-remotely, does not need any local privileges (including the local
+with the [git(1)](https://git-scm.com/) and [curl(1)](https://curl.haxx.se/) programs installed. 
+Everything is performed remotely, does not need any local privileges (including the local
 downloaded client programs) and does not change the local Linux system
 at all.
 
