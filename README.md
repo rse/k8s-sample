@@ -102,27 +102,43 @@ The **k8s-sample** consists of the following parts:
   Here you can find the scripts for establishing and attaching to the
   Kubernetes run-time environment.
 
-  - For standard contexts (arbitrary Docker and Kubernetes):
+  For standard contexts (arbitrary locally pre-existing Docker and
+  remotely pre-existing Kubernetes installation), use the following
+  command (where `<kubeconfig>` is the Kubernetes configuration of the
+  admin account as manually fetched from the Kubernetes installation):
 
     ```sh
-    $ bash   2-env-setup/1-setup-std.bash
+    $ bash 2-env-setup/1-setup-std.bash <kubeconfig>
+    ```
+
+  For msg Project Server (PS) contexts (where `<hostname>` is the
+  hostname of the msg Project Server instance), instead the following
+  command should be used (which installs the Rancher K3S software stack
+  and uses both Docker and Kubernetes remotely):
+
+    ```sh
+    $ bash 2-env-setup/1-setup-ps.bash <hostname>
+    ```
+
+  Now we import the setup results into our shell environment with:
+
+    ```sh
     $ source 2-env-setup/2-env.bash
     ```
 
-  - For msg Project Server (PS) contexts (where `<hostname>` is the
-    hostname of the msg Project Server instance):
-
-    ```sh
-    $ bash   2-env-setup/1-setup-ps.bash <hostname>
-    $ source 2-env-setup/2-env.bash
-    ```
-
-  After creating the environment, we create a cluster admin service
-  account `root` and a dedicated namespace (and corresponding namespace
-  service account) `k8s-sample` for our application.
+  Then we create a cluster admin service account `root`, because
+  applications like the official Kubernetes Dashboard allow
+  authentication of "on-cluster" accounts only (instead of "off-cluster"
+  account like the initial admin account):
 
     ```sh
     $ source 2-env-setup/3-root.bash
+    ```
+
+  Finally, we create a dedicated namespace (and corresponding namespace
+  service account) `k8s-sample` for our application:
+
+    ```sh
     $ source 2-env-setup/4-namespace.bash
     ```
 
