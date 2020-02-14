@@ -17,12 +17,12 @@ metadata:
         pkg: {{ template "package.fullname" . }}
         tier: {{ .Values.db.name }}
 spec:
-    type: ClusterIP
+    type: {{ .Values.db.service.type }}
     selector:
         pkg: {{ template "package.fullname" . }}
         tier: {{ .Values.db.name }}
     ports:
-        -   protocol: {{ .Values.db.service.type }}
+        -   protocol: {{ .Values.db.service.protocol }}
             port: {{ .Values.db.service.port }}
             targetPort: default
 
@@ -64,11 +64,15 @@ spec:
                         {{- end }}
                     ports:
                         -   name: default
-                            protocol: {{ .Values.db.service.type }}
+                            protocol: {{ .Values.db.service.protocol }}
                             containerPort: {{ .Values.db.service.port }}
                     volumeMounts:
                         -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
                             mountPath: {{ .Values.db.storage.path }}
+            {{- if .Values.db.storage.gid }}
+            securityContext:
+                fsGroup: {{ .Values.db.storage.gid }}
+            {{- end }}
             {{- if .Values.db.storage.shared }}
             volumes:
                 -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
@@ -86,8 +90,12 @@ spec:
             spec:
                 accessModes:
                     - ReadWriteOnce
-                volumeMode: Filesystem
+                {{- if .Values.db.storage.mode }}
+                volumeMode: {{ .Values.db.storage.mode }}
+                {{- end }}
+                {{- if .Values.db.storage.type }}
                 storageClassName: {{ .Values.db.storage.type }}
+                {{- end }}
                 resources:
                     requests:
                         storage: {{ .Values.db.storage.size }}
@@ -106,9 +114,13 @@ metadata:
         tier: {{ .Values.db.name }}
 spec:
     accessModes:
-        - ReadWriteOnce
-    volumeMode: Filesystem
+        - ReadWriteMany
+    {{- if .Values.db.storage.mode }}
+    volumeMode: {{ .Values.db.storage.mode }}
+    {{- end }}
+    {{- if .Values.db.storage.type }}
     storageClassName: {{ .Values.db.storage.type }}
+    {{- end }}
     resources:
         requests:
             storage: {{ .Values.db.storage.size }}

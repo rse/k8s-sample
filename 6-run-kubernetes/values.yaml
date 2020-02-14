@@ -13,7 +13,7 @@ app:
     name:             app
     image:
         name:         "docker.io/engelschall/k8s-sample"
-        tag:          "0.9.2-20200106"
+        tag:          "0.9.3-20200213"
     container:
         replicas:     1
         restart:      Always
@@ -22,13 +22,16 @@ app:
             db:       [ "-d", "pg:postgres://app:app@k8s-sample-db:5432/app", "-w", "10" ]
         env:
     service:
-        type:         TCP
+        type:         ClusterIP
+        protocol:     TCP
         port:         9090
         url:          /k8s-sample
     storage:
         path:         /data
-        type:         nfs
+        mode:         Filesystem
+        type:         null
         size:         100Mi
+        gid:          2000
         shared:       false
 
 db:
@@ -36,7 +39,7 @@ db:
     name:             db
     image:
         name:         "docker.msg.team/ps/std-postgresql"
-        tag:          "12.1-20191229"
+        tag:          "12.2-20200213"
     container:
         replicas:     1
         restart:      Always
@@ -48,11 +51,13 @@ db:
             CFG_CUSTOM_PASSWORD: app
             CFG_CUSTOM_USERNAME: app
     service:
-        type:         TCP
+        type:         ClusterIP
+        protocol:     TCP
         port:         5432
     storage:
         path:         /data
         type:         nfs
         size:         100Mi
+        gid:          2000
         shared:       false
 

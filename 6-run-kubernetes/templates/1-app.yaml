@@ -44,12 +44,12 @@ metadata:
         pkg: {{ template "package.fullname" . }}
         tier: {{ .Values.app.name }}
 spec:
-    type: ClusterIP
+    type: {{ .Values.app.service.type }}
     selector:
         pkg: {{ template "package.fullname" . }}
         tier: {{ .Values.app.name }}
     ports:
-        -   protocol: {{ .Values.app.service.type }}
+        -   protocol: {{ .Values.app.service.protocol }}
             port: {{ .Values.app.service.port }}
             targetPort: default
 
@@ -97,11 +97,15 @@ spec:
                         {{- end }}
                     ports:
                         -   name: default
-                            protocol: {{ .Values.app.service.type }}
+                            protocol: {{ .Values.app.service.protocol }}
                             containerPort: {{ .Values.app.service.port }}
                     volumeMounts:
                         -   name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
                             mountPath: {{ .Values.app.storage.path }}
+            {{- if .Values.app.storage.gid }}
+            securityContext:
+                fsGroup: {{ .Values.app.storage.gid }}
+            {{- end }}
             {{- if .Values.app.storage.shared }}
             volumes:
                 -   name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
@@ -119,8 +123,12 @@ spec:
             spec:
                 accessModes:
                     - ReadWriteOnce
-                volumeMode: Filesystem
+                {{- if .Values.app.storage.mode }}
+                volumeMode: {{ .Values.app.storage.mode }}
+                {{- end }}
+                {{- if .Values.app.storage.type }}
                 storageClassName: {{ .Values.app.storage.type }}
+                {{- end }}
                 resources:
                     requests:
                         storage: {{ .Values.app.storage.size }}
@@ -140,8 +148,12 @@ metadata:
 spec:
     accessModes:
         - ReadWriteMany
-    volumeMode: Filesystem
+    {{- if .Values.app.storage.mode }}
+    volumeMode: {{ .Values.app.storage.mode }}
+    {{- end }}
+    {{- if .Values.app.storage.type }}
     storageClassName: {{ .Values.app.storage.type }}
+    {{- end }}
     resources:
         requests:
             storage: {{ .Values.app.storage.size }}
