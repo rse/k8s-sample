@@ -54,7 +54,8 @@ $ open http[s]://<ingress-endpoint>/k8s-sample/         # open deployed applicat
 ```
 
 For special msg Project Server (PS) contexts
-(where `<hostname>` is the FQDN of the msg Project Server instance):
+(where `<hostname>` is the FQDN of the msg Project Server instance
+where you have SSH access to):
 
 ```sh
 $ git clone https://github.com/rse/k8s-sample/          # clone repository
