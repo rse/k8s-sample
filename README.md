@@ -160,7 +160,7 @@ The **k8s-sample** consists of the following parts:
   **k8s-sample** application as a Docker/OCI container for use in both
   step 5 and 6. Only used by you in case you want to understand the
   Docker/OCI container packaging or build and push the container to
-  Docker Hub.
+  your container image repository/registry (e.g. Docker Hub).
 
   ```sh
   $ (cd 4-app-container && make build push)
