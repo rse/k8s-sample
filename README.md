@@ -5,7 +5,7 @@ k8s-sample &mdash; Kubernetes Sample Application
 This is a sample application to showcase the software deployment on
 the container run-time environments [Docker](https://www.docker.com/)
 and [Kubernetes (K8S)](https://kubernetes.io/). The
-application uses a Rich-Client architecture, comprised of an
+sample application uses a Rich-Client architecture, comprised of an
 [HTML5](https://en.wikipedia.org/wiki/HTML5) Single-Page Application
 (SPA) client and a [Node.js](https://nodejs.org/) server and runs
 under an arbitrary URL prefix. To showcase important run-time aspects,
@@ -18,6 +18,17 @@ is deployed onto a [Docker](https://www.docker.com/) run-time
 environment via [Docker-Compose](https://docs.docker.com/compose/) and
 onto a [Kubernetes](https://kubernetes.io/) run-time environment via
 [Helm](https://helm.sh/).
+
+This project provides you the entire life-cycle: connecting and
+bootstrapping the run-time environments, building and running the
+application locally, building the application into a container
+and deploying the container onto the run-time environments. On
+the client side all this just needs a plain Linux/amd64 system
+(e.g. [use Windows Subsystem for Linux (WSL)] under Windows
+10](https://github.com/rse/unix-under-windows)) with the git(1) and
+curl(1) programs installed. Everything is performed remotely, does
+not need any local privileges (including the local downloaded client
+programs) and does not change the local Linux system at all.
 
 Sneak Preview
 -------------
