@@ -41,16 +41,16 @@ Quick Test-Drive
 For standard contexts:
 
 ```sh
-$ git clone https://github.com/rse/k8s-sample/          # clone repository
-$ cd k8s-sample                                         # enter working copy
-$ (cd 1-env-util && make)                               # etablish environment utility
-$ bash   2-env-setup/1-setup-std.bash <kubeconfig-file> # setup environment
-$ source 2-env-setup/2-env.bash                         # attach environment
-$ source 2-env-setup/3-root.bash                        # create cluster admin
-$ source 2-env-setup/4-namespace.bash                   # create application namespace
-$ cd 6-run-kubernetes                                   # enter Kubernetes deployment procedure
-$ make install [DB_ENABLED=true]                        # execute Kubernetes deployment procedure
-$ open http[s]://<ingress-endpoint>/k8s-sample/         # open deployed application
+$ git clone https://github.com/rse/k8s-sample/                         # clone repository
+$ cd k8s-sample                                                        # enter working copy
+$ (cd 1-env-util && make)                                              # etablish environment utility
+$ bash   2-env-setup/1-setup-std.bash <kubeconfig-file> [<docker-url>] # setup environment
+$ source 2-env-setup/2-env.bash                                        # attach environment
+$ source 2-env-setup/3-root.bash                                       # create cluster admin
+$ source 2-env-setup/4-namespace.bash                                  # create application namespace
+$ cd 6-run-kubernetes                                                  # enter Kubernetes deployment procedure
+$ make install [DB_ENABLED=true]                                       # execute Kubernetes deployment procedure
+$ open http[s]://<ingress-endpoint>/k8s-sample/                        # open deployed application
 ```
 
 For special msg Project Server (PS) contexts
@@ -58,16 +58,16 @@ For special msg Project Server (PS) contexts
 where you have SSH access to):
 
 ```sh
-$ git clone https://github.com/rse/k8s-sample/          # clone repository
-$ cd k8s-sample                                         # enter working copy
-$ (cd 1-env-util && make)                               # etablish environment utility
-$ bash   2-env-setup/1-setup-ps.bash <hostname>         # setup environment
-$ source 2-env-setup/2-env.bash                         # attach environment
-$ source 2-env-setup/3-root.bash                        # create cluster admin
-$ source 2-env-setup/4-namespace.bash                   # create application namespace
-$ cd 6-runtime-kubernetes                               # enter Kubernetes deployment procedure
-$ make install [DB_ENABLED=true]                        # execute Kubernetes deployment procedure
-$ open http[s]://<hostname>/ase-k3s/k8s-sample/         # open deployed application
+$ git clone https://github.com/rse/k8s-sample/     # clone repository
+$ cd k8s-sample                                    # enter working copy
+$ (cd 1-env-util && make)                          # etablish environment utility
+$ bash   2-env-setup/1-setup-ps.bash <hostname>    # setup environment
+$ source 2-env-setup/2-env.bash                    # attach environment
+$ source 2-env-setup/3-root.bash                   # create cluster admin
+$ source 2-env-setup/4-namespace.bash              # create application namespace
+$ cd 6-runtime-kubernetes                          # enter Kubernetes deployment procedure
+$ make install [DB_ENABLED=true]                   # execute Kubernetes deployment procedure
+$ open http[s]://<hostname>/ase-k3s/k8s-sample/    # open deployed application
 ```
 
 Short Background
@@ -108,7 +108,7 @@ The **k8s-sample** consists of the following parts:
   admin account as manually fetched from the Kubernetes installation):
 
     ```sh
-    $ bash 2-env-setup/1-setup-std.bash <kubeconfig>
+    $ bash 2-env-setup/1-setup-std.bash <kubeconfig> [<docker-url>]
     ```
 
   For msg Project Server (PS) contexts (where `<hostname>` is the
