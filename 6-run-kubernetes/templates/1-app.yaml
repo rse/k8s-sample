@@ -77,9 +77,21 @@ spec:
                 tier: {{ .Values.app.name }}
         spec:
             restartPolicy: {{ .Values.app.container.restart }}
+            {{- if .Values.app.init }}
+            initContainers:
+                -   name:    {{ template "package.fullname" . }}-{{ .Values.app.name }}-init
+                    image:   {{ .Values.app.init.image }}:{{ .Values.app.init.tag }}
+                    command:
+                        {{- range .Values.app.init.command }}
+                        -   {{ . | quote }}
+                        {{- end }}
+                    volumeMounts:
+                        -   name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+                            mountPath: {{ .Values.app.storage.path }}
+            {{- end }}
             containers:
                 -   name:  {{ template "package.fullname" . }}-{{ .Values.app.name }}
-                    image: {{ .Values.app.image.name }}:{{ .Values.app.image.tag }}
+                    image: {{ .Values.app.container.image }}:{{ .Values.app.container.tag }}
                     args:
                         {{- if .Values.db.enabled }}
                         {{- range .Values.app.container.args.db }}

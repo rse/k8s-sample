@@ -11,10 +11,13 @@ package:
 
 app:
     name:             app
-    image:
-        name:         "docker.io/engelschall/k8s-sample"
-        tag:          "0.9.3-20200213"
+    init:
+        image:        "alpine"
+        tag:          "latest"
+        command:      [ "sh", "-c", "chown 2000:2000 /data && chmod 755 /data" ]
     container:
+        image:        "docker.io/engelschall/k8s-sample"
+        tag:          "0.9.3-20200213"
         replicas:     1
         restart:      Always
         args:
@@ -31,16 +34,15 @@ app:
         mode:         Filesystem
         type:         null
         size:         100Mi
-        gid:          2000
+        gid:          null
         shared:       false
 
 db:
     enabled:          false
     name:             db
-    image:
-        name:         "docker.msg.team/ps/std-postgresql"
-        tag:          "12.2-20200213"
     container:
+        image:        "docker.msg.team/ps/std-postgresql"
+        tag:          "12.2-20200213"
         replicas:     1
         restart:      Always
         args:         []
@@ -58,6 +60,6 @@ db:
         path:         /data
         type:         nfs
         size:         100Mi
-        gid:          2000
+        gid:          null
         shared:       false
 

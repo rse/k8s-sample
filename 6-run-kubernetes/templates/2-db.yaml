@@ -50,9 +50,21 @@ spec:
                 tier: {{ .Values.db.name }}
         spec:
             restartPolicy: {{ .Values.db.container.restart }}
+            {{- if .Values.db.init }}
+            initContainers:
+                -   name:    {{ template "package.fullname" . }}-{{ .Values.db.name }}-init
+                    image:   {{ .Values.db.init.image }}:{{ .Values.db.init.tag }}
+                    command:
+                        {{- range .Values.db.init.command }}
+                        -   {{ . | quote }}
+                        {{- end }}
+                    volumeMounts:
+                        -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
+                            mountPath: {{ .Values.db.storage.path }}
+            {{- end }}
             containers:
                 -   name:  {{ template "package.fullname" . }}-{{ .Values.db.name }}
-                    image: {{ .Values.db.image.name }}:{{ .Values.db.image.tag }}
+                    image: {{ .Values.db.container.image }}:{{ .Values.db.container.tag }}
                     args:
                         {{- range .Values.db.container.args }}
                         -   {{ . | quote }}
