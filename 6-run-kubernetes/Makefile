@@ -39,6 +39,9 @@ status:
 	helm -n k8s-sample status k8s-sample
 	kubectl -n k8s-sample get all -l pkg=k8s-sample
 
+dump:
+	k8s-util dump k8s-sample
+
 logs:
 	kubectl -n k8s-sample logs -l pkg=k8s-sample
 
