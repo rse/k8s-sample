@@ -120,6 +120,16 @@ The **k8s-sample** consists of the following parts:
     $ bash 2-env-setup/1-setup-ps.bash <hostname>
     ```
 
+  In case you have trouble with the TLS connectivity to your Kubernetes
+  cluster (usually in case of self-signed server certificates or a
+  certificate of an unknown CA), you can force Kubernetes to accept the
+  situation with:
+
+    ```sh
+    $ kubectl config get-clusters
+    $ kubectl config set clusters.<cluster-name>.insecure-skip-tls-verify true
+    ```
+
   Now we import the setup results into our shell environment with:
 
     ```sh
