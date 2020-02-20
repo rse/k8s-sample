@@ -38,7 +38,7 @@ if [[ $OPT_INSTALL == yes ]]; then
         K3S_PASSWD_SYSTEM="$(apg -n1 -a0 -m32 -x32 -MCL)" && \
         docker-stack install ase-k3s'
     echo "++ server-side: give Kubernetes some time to spin up"
-    sleep 8
+    sleep 15
 elif [[ $INSTALLED == no ]]; then
     echo "** ERROR: require K3S (either pre-installed or requested to be installed)" 1>&2
     exit 1
