@@ -23,7 +23,7 @@ else
 fi
 
 #   ensure K3S is installed
-if [[ $OPT_INSTALL == yes ]]; then
+if [[ $INSTALL == yes ]]; then
     if [[ $INSTALLED == yes ]]; then
         #   optionally prune K3S before installation
         echo "++ server-side: pruning old K3S Kubernetes installation (ase-k3s)"
