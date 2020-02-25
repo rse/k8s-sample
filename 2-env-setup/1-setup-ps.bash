@@ -7,7 +7,7 @@ INSTALL=no
 while getopts ":i" option; do
     case $option in
         i  ) INSTALL=yes ;;
-        \? ) echo "Usage: source $0 [-p] [-i] <hostname>"; exit 1 ;;
+        \? ) echo "Usage: source $0 [-i] <hostname>"; exit 1 ;;
     esac
 done
 shift $((OPTIND -1))
