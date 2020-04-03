@@ -65,7 +65,7 @@ $ bash   2-env-setup/1-setup-ps.bash <hostname>    # setup environment
 $ source 2-env-setup/2-env.bash                    # attach environment
 $ source 2-env-setup/3-root.bash                   # create cluster admin
 $ source 2-env-setup/4-namespace.bash              # create application namespace
-$ cd 6-runtime-kubernetes                          # enter Kubernetes deployment procedure
+$ cd 6-run-kubernetes                          # enter Kubernetes deployment procedure
 $ make install [DB_ENABLED=true]                   # execute Kubernetes deployment procedure
 $ open http[s]://<hostname>/ase-k3s/k8s-sample/    # open deployed application
 ```
