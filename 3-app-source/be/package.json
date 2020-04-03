@@ -6,20 +6,20 @@
     "main":                           "src/app.js",
     "devDependencies": {
         "eslint":                     "6.8.0",
-        "eslint-config-standard":     "14.1.0",
+        "eslint-config-standard":     "14.1.1",
         "eslint-plugin-standard":     "4.0.1",
         "eslint-plugin-promise":      "4.2.1",
-        "eslint-plugin-import":       "2.20.1",
-        "eslint-plugin-node":         "11.0.0",
-        "babel-eslint":               "10.0.3"
+        "eslint-plugin-import":       "2.20.2",
+        "eslint-plugin-node":         "11.1.0",
+        "babel-eslint":               "10.1.0"
     },
     "dependencies": {
-        "@hapi/hapi":                 "19.1.0",
+        "@hapi/hapi":                 "19.1.1",
         "@hapi/inert":                "6.0.1",
-        "@hapi/boom":                 "9.0.0",
-        "yargs":                      "15.1.0",
-        "knex":                       "0.20.9",
-        "pg":                         "7.18.1",
+        "@hapi/boom":                 "9.1.0",
+        "yargs":                      "15.3.1",
+        "knex":                       "0.20.13",
+        "pg":                         "8.0.0",
         "sqlite3":                    "4.1.1",
         "pure-uuid":                  "1.6.0"
     },
