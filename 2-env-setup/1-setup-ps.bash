@@ -10,7 +10,7 @@ while getopts ":i" option; do
         \? ) echo "Usage: source $0 [-i] <hostname>"; exit 1 ;;
     esac
 done
-shift $((OPTIND -1))
+shift $((OPTIND - 1))
 SERVER=${1-"127.0.0.1"}
 
 #   check whether K3S is already installed
