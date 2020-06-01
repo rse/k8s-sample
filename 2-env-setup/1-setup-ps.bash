@@ -11,7 +11,7 @@ while getopts ":i" option; do
     esac
 done
 shift $((OPTIND -1))
-SERVER=${1-"10.16.19.50"}
+SERVER=${1-"127.0.0.1"}
 
 #   check whether K3S is already installed
 echo "++ server-side: checking for K3S Kubernetes installation (ase-k3s)"
