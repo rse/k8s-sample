@@ -16,7 +16,7 @@ SERVER=${1-"127.0.0.1"}
 #   check whether K3S is already installed
 echo "++ server-side: checking for K3S Kubernetes installation (ase-k3s)"
 ssh -q root@$SERVER 'docker-stack status ase-k3s >/dev/null 2>&1'
-if [[ $rc -eq 0 ]]; then
+if [[ $? -eq 0 ]]; then
     INSTALLED=yes
 else
     INSTALLED=no
