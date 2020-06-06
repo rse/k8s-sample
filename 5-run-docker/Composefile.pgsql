@@ -12,7 +12,8 @@ services:
     k8s-sample-app:
         container_name: k8s-sample-app
         image:          docker.io/engelschall/k8s-sample:0.9.3-20200213
-        command:        -a 0.0.0.0 -p 9090 -d pg:postgres://app:app@db/app -w 10
+        command:        -a 0.0.0.0 -p ${K8S_SAMPLE_APP_PORT-9090}
+                        -d pg:postgres://${K8S_SAMPLE_DB_APP_USERNAME-app}:${K8S_SAMPLE_DB_APP_PASSWORD-app}@db/${K8S_SAMPLE_DB_APP_DATABASE-app} -w 10
         init:           true
         restart:        always
         volumes:
@@ -22,7 +23,7 @@ services:
         depends_on:
             - k8s-sample-db
         ports:
-            - 9090:9090
+            - ${K8S_SAMPLE_APP_PORT-9090}:9090
 
     #   the k8s-sample database
     k8s-sample-db:
@@ -31,11 +32,11 @@ services:
         init:           true
         restart:        always
         environment:
-            CFG_ADMIN_USERNAME:  postgresql
-            CFG_ADMIN_PASSWORD:  postgresql
-            CFG_CUSTOM_DATABASE: app
-            CFG_CUSTOM_USERNAME: app
-            CFG_CUSTOM_PASSWORD: app
+            CFG_ADMIN_USERNAME:  ${K8S_SAMPLE_DB_ADM_USERNAME-postgresql}
+            CFG_ADMIN_PASSWORD:  ${K8S_SAMPLE_DB_ADM_PASSWORD-postgresql}
+            CFG_CUSTOM_DATABASE: ${K8S_SAMPLE_DB_APP_DATABASE-app}
+            CFG_CUSTOM_USERNAME: ${K8S_SAMPLE_DB_APP_USERNAME-app}
+            CFG_CUSTOM_PASSWORD: ${K8S_SAMPLE_DB_APP_PASSWORD-app}
         volumes:
             - k8s-sample-db:/data
         networks:
