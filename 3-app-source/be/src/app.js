@@ -111,6 +111,15 @@ const AppCmd  = require("./app-cmd")
 
     /*  start REST server  */
     await server.start()
+
+    /*  graceful termination handling  */
+    const terminate = async (signal) => {
+        process.stdout.write(`++ received ${signal} signal -- shutting down\n`)
+        await server.stop()
+        process.exit(0)
+    }
+    process.on("SIGINT",  () => terminate("INT"))
+    process.on("SIGTERM", () => terminate("TERM"))
 })().catch((err) => {
     /*  fatal error handling  */
     process.stderr.write(`ERROR: ${err.stack}\n`)
