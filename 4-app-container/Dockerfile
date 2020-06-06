@@ -8,25 +8,22 @@
 ARG         IMAGE_PREFIX=docker.io/engelschall/
 ARG         IMAGE_NAME=k8s-sample
 ARG         IMAGE_VERSION=0.9.3
-ARG         IMAGE_RELEASE=20200213
+ARG         IMAGE_RELEASE=20200606
 
 #   start with the standard Node.js container image
-FROM        node:12.16-alpine
+FROM        node:14.4-alpine
 
 #   update system
-RUN         apk update && \
-            apk upgrade && \
-            apk add bash
+RUN         apk update && apk upgrade && apk add bash
 
 #   provide build environment
 RUN         apk add --no-cache --virtual .build-env \
-                binutils-gold gcc make \
-                linux-headers libgcc \
-                shadow xz tar
+                binutils-gold gcc make shadow xz tar \
+                linux-headers libgcc
 
 #   create application program area
-RUN         groupadd -g 2000 app
-RUN         useradd -u 2000 -g app -d /app -m -s /bin/sh -p '!' -l app
+RUN         groupadd -g 10000 app
+RUN         useradd -u 10000 -g app -d /app -m -s /bin/sh -p '!' -l app
 RUN         mkdir -p /app/bin /app/etc /app/lib /app/tmp
 ENV         HOME=/app
 
@@ -44,29 +41,16 @@ COPY        src.tar.xz .
 RUN         xz -d -c <src.tar.xz | tar xf -; rm -f src.tar.xz
 
 #   reconfigure NPM
-RUN         (   echo "spin=false"; \
-                echo "save=false"; \
-                echo "loglevel=error" ) >/app/.npmrc
+RUN         (echo "spin=false"; echo "save=false"; echo "loglevel=error") >/app/.npmrc
 
 #   build application
-RUN         (   cd fe && \
-                npm install && \
-                NODE_ENV=production npm run build )
-RUN         (   cd be && \
-                NODE_ENV=production npm install )
+RUN         (cd fe && npm install && NODE_ENV=production npm run build)
+RUN         (cd be && NODE_ENV=production npm install)
 
 #   install application
-RUN         mkdir -p \
-                /app/lib/sample/fe \
-                /app/lib/sample/be
-RUN         cp -rp \
-                fe/dst/* \
-                /app/lib/sample/fe/
-RUN         cp -rp \
-                be/package.json \
-                be/src \
-                be/node_modules \
-                /app/lib/sample/be/
+RUN         mkdir -p /app/lib/sample/fe /app/lib/sample/be
+RUN         cp -rp fe/dst/*                               /app/lib/sample/fe/
+RUN         cp -rp be/package.json be/src be/node_modules /app/lib/sample/be/
 
 #   remove build environment
 USER        root
