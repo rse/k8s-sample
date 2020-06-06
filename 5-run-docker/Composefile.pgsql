@@ -27,7 +27,7 @@ services:
     #   the k8s-sample database
     k8s-sample-db:
         container_name: k8s-sample-db
-        image:          docker.msg.team/ps/std-postgresql:12.1-20200122
+        image:          docker.msg.team/ps/std-postgresql:12.3-20200516
         init:           true
         restart:        always
         environment:

@@ -42,7 +42,7 @@ db:
     name:             db
     container:
         image:        "docker.msg.team/ps/std-postgresql"
-        tag:          "12.2-20200213"
+        tag:          "12.3-20200516"
         replicas:     1
         restart:      Always
         args:         []
