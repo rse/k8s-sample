@@ -18,8 +18,8 @@ RUN         apk update && apk upgrade && apk add bash
 
 #   provide build environment
 RUN         apk add --no-cache --virtual .build-env \
-                binutils-gold gcc make shadow xz tar \
-                linux-headers libgcc
+                binutils-gold gcc g++ python make shadow xz tar \
+                libc-dev linux-headers libgcc libstdc++
 
 #   create application program area
 RUN         groupadd -g 10000 app
