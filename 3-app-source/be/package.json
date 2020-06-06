@@ -5,7 +5,7 @@
     "license":                        "MIT",
     "main":                           "src/app.js",
     "devDependencies": {
-        "eslint":                     "6.8.0",
+        "eslint":                     "7.2.0",
         "eslint-config-standard":     "14.1.1",
         "eslint-plugin-standard":     "4.0.1",
         "eslint-plugin-promise":      "4.2.1",
@@ -18,9 +18,9 @@
         "@hapi/inert":                "6.0.1",
         "@hapi/boom":                 "9.1.0",
         "yargs":                      "15.3.1",
-        "knex":                       "0.20.13",
-        "pg":                         "8.0.0",
-        "sqlite3":                    "4.1.1",
+        "knex":                       "0.21.1",
+        "pg":                         "8.2.1",
+        "sqlite3":                    "4.2.0",
         "pure-uuid":                  "1.6.0"
     },
     "scripts": {
