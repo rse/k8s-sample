@@ -23,7 +23,7 @@ services:
         depends_on:
             - k8s-sample-db
         ports:
-            - ${K8S_SAMPLE_APP_PORT-9090}:9090
+            - ${K8S_SAMPLE_APP_PORT-9090}:${K8S_SAMPLE_APP_PORT-9090}
 
     #   the k8s-sample database
     k8s-sample-db:

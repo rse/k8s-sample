@@ -18,7 +18,7 @@ services:
         volumes:
             - k8s-sample-app:/data
         ports:
-            - ${K8S_SAMPLE_APP_PORT-9090}:9090
+            - ${K8S_SAMPLE_APP_PORT-9090}:${K8S_SAMPLE_APP_PORT-9090}
 
 volumes:
     k8s-sample-app:
