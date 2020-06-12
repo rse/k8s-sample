@@ -103,9 +103,16 @@ spec:
                         {{- end }}
                         {{- end }}
                     env:
-                        {{- range $key, $val := .Values.app.container.env }}
+                        {{- if .Values.db.enabled }}
+                        {{- range $key, $val := .Values.app.container.env.db }}
                         -   name:  {{ $key | quote }}
                             value: {{ $val | quote }}
+                        {{- end }}
+                        {{- else }}
+                        {{- range $key, $val := .Values.app.container.env.default }}
+                        -   name:  {{ $key | quote }}
+                            value: {{ $val | quote }}
+                        {{- end }}
                         {{- end }}
                     ports:
                         -   name: default

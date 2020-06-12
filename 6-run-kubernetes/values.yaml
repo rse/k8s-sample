@@ -17,13 +17,16 @@ app:
         command:      [ "sh", "-c", "chown 2000:2000 /data && chmod 755 /data" ]
     container:
         image:        "docker.io/engelschall/k8s-sample"
-        tag:          "0.9.3-20200213"
+        tag:          "0.9.4-20200612"
         replicas:     1
         restart:      Always
         args:
             default:  [ "-d", "sqlite3:/data/app.sqlite" ]
-            db:       [ "-d", "pg:postgres://app:app@k8s-sample-db:5432/app", "-w", "10" ]
+            db:       [ "-d", "pg:postgres://app:app@k8s-sample-db:5432/app" ]
         env:
+            default:
+            db:
+                K8S_SAMPLE_OPTS_DOCKERIZE: "-wait tcp://k8s-sample-db:5432 -timeout 60s"
     service:
         type:         ClusterIP
         protocol:     TCP
