@@ -14,7 +14,7 @@ app:
     init:
         image:        "alpine"
         tag:          "latest"
-        command:      [ "sh", "-c", "chown 2000:2000 /data && chmod 755 /data" ]
+        command:      [ "sh", "-c", "chown 10000:10000 /data && chmod 755 /data" ]
     container:
         image:        "docker.io/engelschall/k8s-sample"
         tag:          "0.9.4-20200612"
