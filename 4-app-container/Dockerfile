@@ -57,8 +57,8 @@ RUN         xz -d -c <src.tar.xz | tar xf -; rm -f src.tar.xz
 RUN         (echo "spin=false"; echo "save=false"; echo "loglevel=error") >/app/.npmrc
 
 #   build application
-RUN         (cd fe && npm install && NODE_ENV=production npm run build)
-RUN         (cd be && npm install --production)
+RUN         (cd fe && npm install --silent && NODE_ENV=production npm run build)
+RUN         (cd be && npm install --silent --production)
 
 #   ==== STAGE 3 ====
 
