@@ -29,8 +29,6 @@ const AppCmd  = require("./app-cmd")
             .describe("a", "listen IP address")
         .number("p").nargs("p", 1).alias("p", "port").default("p", 9090)
             .describe("p", "listen TCP port")
-        .number("w").nargs("w", 1).alias("w", "wait").default("w", 0)
-            .describe("w", "wait for database")
         .version(false)
         .strict()
         .showHelpOnFail(true)
@@ -48,7 +46,6 @@ const AppCmd  = require("./app-cmd")
     reduce("u", "ui")
     reduce("a", "address")
     reduce("p", "port")
-    reduce("w", "wait")
 
     /*  determine database connection  */
     process.stdout.write(`++ storing data to ${argv.database}\n`)
@@ -58,12 +55,6 @@ const AppCmd  = require("./app-cmd")
     connection.connection = m[2]
     if (!connection.connection.match(/^[^:]+:\/\//))
         connection.connection = { filename: connection.connection }
-
-    /*  optionally wait for database to spin up  */
-    if (argv.wait > 0) {
-         process.stdout.write(`++ awaiting database for ${argv.wait} seconds\n`)
-         await new Promise((resolve) => setTimeout(resolve, argv.wait * 1000))
-    }
 
     /*  establish database access  */
     const knex = Knex({ ...connection, useNullAsDefault: true })
