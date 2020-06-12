@@ -11,12 +11,13 @@ services:
     #   the k8s-sample application
     k8s-sample-app:
         container_name: k8s-sample-app
-        image:          docker.io/engelschall/k8s-sample:0.9.3-20200213
-        command:        -a 0.0.0.0 -p ${K8S_SAMPLE_APP_PORT-9090}
+        image:          docker.io/engelschall/k8s-sample:0.9.4-20200612
+        command:        -p ${K8S_SAMPLE_APP_PORT-9090}
                         -d pg:postgres://${K8S_SAMPLE_DB_APP_USERNAME-app}:${K8S_SAMPLE_DB_APP_PASSWORD-app}@db/${K8S_SAMPLE_DB_APP_DATABASE-app}
-                        -w 30
         init:           true
         restart:        always
+        environment:
+            K8S_SAMPLE_OPTS_DOCKERIZE: "-wait tcp://db:5432 -timeout 60s"
         volumes:
             - k8s-sample-app:/data
         networks:
