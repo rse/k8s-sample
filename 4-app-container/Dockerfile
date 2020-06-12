@@ -7,11 +7,30 @@
 #   container information
 ARG         IMAGE_PREFIX=docker.io/engelschall/
 ARG         IMAGE_NAME=k8s-sample
-ARG         IMAGE_VERSION=0.9.3
-ARG         IMAGE_RELEASE=20200606
+ARG         IMAGE_VERSION=0.9.4
+ARG         IMAGE_RELEASE=20200612
+
+#   ==== STAGE 1 ====
+
+#   derive image from a certain base image
+FROM        golang:1.14.4-alpine3.11 AS stage1
+
+#   add additional build tools
+RUN         apk update && apk upgrade && apk add git binutils
+
+#   create build environment
+ENV         GOPATH=/tmp/build
+WORKDIR     /tmp/build
+
+#   build Dockerize
+RUN         go get -v -d github.com/jwilder/dockerize
+RUN         go build -v -o dockerize github.com/jwilder/dockerize
+RUN         strip dockerize
+
+#   ==== STAGE 2 ====
 
 #   start with the standard Node.js container image
-FROM        node:14.4-alpine
+FROM        node:12.18-alpine AS stage2
 
 #   update system
 RUN         apk update && apk upgrade && apk add bash
@@ -24,15 +43,9 @@ RUN         apk add --no-cache --virtual .build-env \
 #   create application program area
 RUN         groupadd -g 10000 app
 RUN         useradd -u 10000 -g app -d /app -m -s /bin/sh -p '!' -l app
-RUN         mkdir -p /app/bin /app/etc /app/lib /app/tmp
+RUN         mkdir -p /app/tmp
 ENV         HOME=/app
-
-#   create application data rea
-RUN         mkdir -p /data
-
-#   fixate ownership
 RUN         chown -R app:app /app
-RUN         chown -R app:app /data
 
 #   establish build environment
 USER        app:app
@@ -45,12 +58,47 @@ RUN         (echo "spin=false"; echo "save=false"; echo "loglevel=error") >/app/
 
 #   build application
 RUN         (cd fe && npm install && NODE_ENV=production npm run build)
-RUN         (cd be && NODE_ENV=production npm install)
+RUN         (cd be && npm install --production)
+
+#   ==== STAGE 3 ====
+
+#   start with the standard Node.js container image
+FROM        node:12.18-alpine
+
+#   update system
+RUN         apk update && apk upgrade && apk add bash
+
+#   provide build environment
+RUN         apk add --no-cache --virtual .build-env shadow
+
+#   create application program area
+RUN         groupadd -g 10000 app
+RUN         useradd -u 10000 -g app -d /app -m -s /bin/sh -p '!' -l app
+RUN         mkdir -p /app/bin /app/etc /app/lib
+ENV         HOME=/app
+ENV         PATH=/app/bin:$PATH
+
+#   create application data rea
+RUN         mkdir -p /data
+
+#   fixate ownership
+RUN         chown -R app:app /app
+RUN         chown -R app:app /data
+USER        app:app
+
+#   install helper utility
+COPY        --chown=app:app --from=stage1 /tmp/build/dockerize /app/bin/
 
 #   install application
-RUN         mkdir -p /app/lib/sample/fe /app/lib/sample/be
-RUN         cp -rp fe/dst/*                               /app/lib/sample/fe/
-RUN         cp -rp be/package.json be/src be/node_modules /app/lib/sample/be/
+RUN         mkdir -p /app/lib/k8s-sample/fe /app/lib/k8s-sample/be/src /app/lib/k8s-sample/be/node_modules
+COPY        --chown=app:app --from=stage2 /app/tmp/fe/dst/           /app/lib/k8s-sample/fe/
+COPY        --chown=app:app --from=stage2 /app/tmp/be/package.json   /app/lib/k8s-sample/be/
+COPY        --chown=app:app --from=stage2 /app/tmp/be/src/           /app/lib/k8s-sample/be/src/
+COPY        --chown=app:app --from=stage2 /app/tmp/be/node_modules/  /app/lib/k8s-sample/be/node_modules/
+
+#   install run-command script
+COPY        --chown=app:app rc.sh /app/etc/rc
+RUN         chmod 755 /app/etc/rc
 
 #   remove build environment
 USER        root
@@ -70,11 +118,7 @@ WORKDIR     /app
 USER        app:app
 
 #   provide entrypoint and start arguments
-ENTRYPOINT  [   "node", "/app/lib/sample/be/src/app.js", \
-                "-d", "sqlite3:/data/app.sqlite", \
-                "-u", "/app/lib/sample/fe", \
-                "-a", "0.0.0.0", \
-                "-p", "9090" ]
+ENTRYPOINT  [ "/app/etc/rc" ]
 CMD         []
 
 #   expose HTTP port
