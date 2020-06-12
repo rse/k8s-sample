@@ -1,6 +1,6 @@
 {
     "name":                           "k8s-sample",
-    "version":                        "0.9.4",
+    "version":                        "0.9.5",
     "author":                         "Dr. Ralf S. Engelschall <rse@engelschall.com>",
     "license":                        "MIT",
     "main":                           "src/app.js",

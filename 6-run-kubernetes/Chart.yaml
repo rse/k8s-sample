@@ -12,8 +12,8 @@ home:               https://github.com/rse/k8s-sample/
 keywords:           [ "k8s", "sample" ]
 type:               application
 
-version:            0.9.4
-appVersion:         0.9.4
+version:            0.9.5
+appVersion:         0.9.5
 
 maintainers:
     -   name:       Dr. Ralf S. Engelschall
