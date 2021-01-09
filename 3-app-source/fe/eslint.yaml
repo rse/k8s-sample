@@ -13,7 +13,7 @@ extends:
 
 parserOptions:
     parser: babel-eslint
-    ecmaVersion: 8
+    ecmaVersion: 12
     sourceType:  module
     ecmaFeatures:
         jsx:     false
@@ -47,10 +47,11 @@ rules:
     space-in-parens:                     off
     array-bracket-spacing:               off
     require-atomic-updates:              off
-    vue/html-indent: off
-    vue/no-multi-spaces: off
+    vue/html-indent:                     off
+    vue/no-multi-spaces:                 off
     vue/singleline-html-element-content-newline: off
-    vue/attributes-order: off
-    vue/order-in-components: off
-    vue/max-attributes-per-line: off
+    vue/attributes-order:                off
+    vue/order-in-components:             off
+    vue/max-attributes-per-line:         off
+    vue/component-tags-order:            off
 

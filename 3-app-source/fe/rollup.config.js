@@ -5,14 +5,14 @@
 */
 
 import vue         from "rollup-plugin-vue"
-import commonjs    from "rollup-plugin-commonjs"
-import replace     from "rollup-plugin-replace"
-import { eslint }  from "rollup-plugin-eslint"
+import commonjs    from "@rollup/plugin-commonjs"
+import replace     from "@rollup/plugin-replace"
+import eslint      from "@rollup/plugin-eslint"
 import bundleSize  from "rollup-plugin-filesize"
-import resolve     from "rollup-plugin-node-resolve"
+import resolve     from "@rollup/plugin-node-resolve"
 import globals     from "rollup-plugin-node-globals"
 import css         from "rollup-plugin-css-only"
-import babel       from "rollup-plugin-babel"
+import babel       from "@rollup/plugin-babel"
 import { terser }  from "rollup-plugin-terser"
 import html        from "rollup-plugin-generate-html"
 
@@ -46,15 +46,15 @@ export default {
         }),
         globals(),
         babel({
-		    babelrc: false,
-            runtimeHelpers: true,
+            babelrc: false,
+            babelHelpers: "runtime",
             include: [
                 "./src/**"
             ],
             exclude: [
                 "node_modules/**"
             ],
-		    presets: [
+            presets: [
                 [ "@babel/preset-env", {
                     targets: { ie: 9 },
                     modules: false
@@ -69,7 +69,7 @@ export default {
                     absoluteRuntime: false
                 } ]
             ]
-	    }),
+        }),
         (process.env.NODE_ENV === "production" && terser()),
         bundleSize(),
         html({
