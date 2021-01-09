@@ -5,23 +5,22 @@
     "license":                        "MIT",
     "main":                           "src/app.js",
     "devDependencies": {
-        "eslint":                     "7.5.0",
-        "eslint-config-standard":     "14.1.1",
-        "eslint-plugin-standard":     "4.0.1",
+        "eslint":                     "7.17.0",
+        "eslint-config-standard":     "16.0.2",
         "eslint-plugin-promise":      "4.2.1",
-        "eslint-plugin-import":       "2.22.0",
+        "eslint-plugin-import":       "2.22.1",
         "eslint-plugin-node":         "11.1.0",
         "babel-eslint":               "10.1.0"
     },
     "dependencies": {
-        "@hapi/hapi":                 "19.2.0",
-        "@hapi/inert":                "6.0.1",
-        "@hapi/boom":                 "9.1.0",
-        "yargs":                      "15.4.1",
-        "knex":                       "0.21.2",
-        "pg":                         "8.3.0",
-        "sqlite3":                    "5.0.0",
-        "pure-uuid":                  "1.6.1"
+        "@hapi/hapi":                 "20.0.3",
+        "@hapi/inert":                "6.0.3",
+        "@hapi/boom":                 "9.1.1",
+        "yargs":                      "16.2.0",
+        "knex":                       "0.21.15",
+        "pg":                         "8.5.1",
+        "sqlite3":                    "5.0.1",
+        "pure-uuid":                  "1.6.2"
     },
     "scripts": {
         "postinstall":                "npx modclean -p . -r -P -n default:safe,default:caution",
