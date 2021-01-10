@@ -1,5 +1,5 @@
 <!--
-**  k8s-sample -- Kubernetes Sample Application
+**  k8s-sample ~ Kubernetes Sample Application
 **  Copyright (c) 2019-2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
 **  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 -->
@@ -37,7 +37,7 @@
     </md-app>
 </template>
 
-<style>
+<style lang="less">
 html, body {
     background-color: #909090 !important;
 }
@@ -48,8 +48,10 @@ html, body {
 .md-tabs {
     width: 100%;
 }
-.md-toolbar .md-tabs {
-    padding-left: 0 !important;
+.md-toolbar {
+    .md-tabs {
+        padding-left: 0 !important;
+    }
 }
 </style>
 
