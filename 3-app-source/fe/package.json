@@ -16,6 +16,7 @@
         "@rollup/plugin-eslint":           "8.0.1",
         "@rollup/plugin-replace":          "2.3.4",
         "@rollup/plugin-node-resolve":     "11.0.1",
+        "@rollup/plugin-url":              "6.0.0",
         "rollup-plugin-filesize":          "9.1.0",
         "rollup-plugin-node-globals":      "1.4.0",
         "rollup-plugin-generate-html":     "0.2.0",
@@ -29,6 +30,7 @@
         "vue-template-compiler":           "2.6.12",
         "vue-eslint-parser":               "7.3.0",
         "postcss":                         "8.2.4",
+        "postcss-url":                     "10.1.1",
         "less":                            "4.1.0"
     },
     "upd": [
@@ -39,7 +41,8 @@
         "vue":                             "2.6.12",
         "vue-router":                      "3.4.9",
         "vue-material":                    "1.0.0-beta-15",
-        "axios":                           "0.21.1"
+        "axios":                           "0.21.1",
+        "@fortawesome/fontawesome-free":   "5.15.1"
     },
     "scripts": {
         "install":                         "true",

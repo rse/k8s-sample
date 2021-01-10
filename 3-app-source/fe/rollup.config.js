@@ -13,8 +13,10 @@ import resolve     from "@rollup/plugin-node-resolve"
 import globals     from "rollup-plugin-node-globals"
 import postcss     from "rollup-plugin-postcss"
 import babel       from "@rollup/plugin-babel"
+import url         from "@rollup/plugin-url"
 import { terser }  from "rollup-plugin-terser"
 import html        from "rollup-plugin-generate-html"
+import postcssUrl  from "postcss-url"
 
 export default {
     external:      [],
@@ -32,6 +34,7 @@ export default {
         resolve({
             browser: true
         }),
+        url(),
         commonjs(),
         replace({
             "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
@@ -44,7 +47,14 @@ export default {
             css: false
         }),
         postcss({
-            plugins: [],
+            plugins: [
+                postcssUrl({
+                    url:        "copy",
+                    basePath:   "",
+                    assetsPath: "",
+                    useHash:    true
+                })
+            ],
             extract: true,
             minimize: false,
             to: "dst/app.css",

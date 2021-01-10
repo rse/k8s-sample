@@ -6,6 +6,7 @@
 
 <template>
     <div class="cmd">
+        <i class="fas fa-info-circle" /> &nbsp;
         On this page you can perform some commands on the server-side.
         Currently, it allows the server-side to temporarily freeze (for 10 seconds), gracefully terminate or
         ungracefully crash.

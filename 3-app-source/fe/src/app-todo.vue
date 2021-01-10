@@ -6,6 +6,7 @@
 
 <template>
     <div class="todo">
+        <i class="fas fa-info-circle" /> &nbsp;
         On this page you can manage a simple to-do list for illustration
         purposes and to proof that this application has a true
         persistence layer on the server-side. This is interesting

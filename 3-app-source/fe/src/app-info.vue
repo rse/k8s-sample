@@ -6,6 +6,7 @@
 
 <template>
     <div class="info">
+        <i class="fas fa-info-circle" /> &nbsp;
         On this page you can see various information gathered and
         provided by the server-side of this application. It allows you
         to inspect the particular environment this application runs
