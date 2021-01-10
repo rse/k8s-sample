@@ -25,7 +25,7 @@ export default {
     plugins: [
         eslint({
             extensions:   [ ".js", ".vue" ],
-            exclude:      [ "**/*.json", "**/*.css" ],
+            exclude:      [ "**/*.json", "**/*.css", "**/*.jpg", "**/*.png", "**/*.svg" ],
             cache:        true,
             throwOnError: true,
             useEslintrc:  true,
