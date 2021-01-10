@@ -3,17 +3,21 @@
 ##  Copyright (c) 2019-2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
-#
+
 ---
 
 extends:
     - eslint:recommended
     - eslint-config-standard
+    - plugin:vue/base
     - plugin:vue/recommended
+
+parser:
+    vue-eslint-parser
 
 parserOptions:
     parser: babel-eslint
-    ecmaVersion: 12
+    ecmaVersion: 8
     sourceType:  module
     ecmaFeatures:
         jsx:     false

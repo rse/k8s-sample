@@ -11,7 +11,7 @@ import eslint      from "@rollup/plugin-eslint"
 import bundleSize  from "rollup-plugin-filesize"
 import resolve     from "@rollup/plugin-node-resolve"
 import globals     from "rollup-plugin-node-globals"
-import css         from "rollup-plugin-css-only"
+import postcss     from "rollup-plugin-postcss"
 import babel       from "@rollup/plugin-babel"
 import { terser }  from "rollup-plugin-terser"
 import html        from "rollup-plugin-generate-html"
@@ -21,6 +21,14 @@ export default {
     context:       "window",
     moduleContext: "window",
     plugins: [
+        eslint({
+            extensions:   [ ".js", ".vue" ],
+            exclude:      [ "**/*.json", "**/*.css" ],
+            cache:        true,
+            throwOnError: true,
+            useEslintrc:  true,
+            configFile:   "eslint.yaml"
+        }),
         resolve({
             browser: true
         }),
@@ -28,21 +36,18 @@ export default {
         replace({
             "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
         }),
-        css({ output: "dst/app.css" }),
-        eslint({
-            extensions:   [ ".js", ".vue" ],
-            exclude:      [ "**/*.json" ],
-            cache:        true,
-            throwOnError: true,
-            useEslintrc:  false,
-            configFile:   "eslint.yaml"
-        }),
         vue({
             template: {
                 isProduction: process.env.NODE_ENV === "production",
                 compilerOptions: { preserveWhitespace: false }
             },
             css: false
+        }),
+        postcss({
+            plugins: [],
+            extract: true,
+            minimize: false,
+            to: "dst/app.css",
         }),
         globals(),
         babel({
