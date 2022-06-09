@@ -29,8 +29,10 @@ spec:
                 paths:
                     -   path: {{ default "/" .Values.app.service.url }}
                         backend:
-                            serviceName: {{ template "package.fullname" . }}-{{ .Values.app.name }}
-                            servicePort: {{ .Values.app.service.port }}
+                            service:
+                                name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
+                                port: 
+                                    number: {{ .Values.app.service.port }}
 {{- end }}
 
 ---
