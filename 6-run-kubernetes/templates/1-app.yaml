@@ -27,7 +27,8 @@ spec:
         -   http:
         {{- end }}
                 paths:
-                    -   path: {{ default "/" .Values.app.service.url }}
+                    -   pathType: prefix
+                        path: {{ default "/" .Values.app.service.url }}
                         backend:
                             service:
                                 name: {{ template "package.fullname" . }}-{{ .Values.app.name }}
