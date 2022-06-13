@@ -8,8 +8,8 @@
 ---
 {{- if .Values.app.service.url }}
 #   traefik path prefix stripping
-kind: Middleware
 apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
 metadata:
     name: path-prefix
 spec:
@@ -27,7 +27,7 @@ metadata:
         pkg: {{ template "package.fullname" . }}
         tier: {{ .Values.app.name }}
     annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: {{ template "package.namespace" . }}-path-prefix@kubernatescrd
+        traefik.ingress.kubernetes.io/router.middlewares: {{ template "package.namespace" . }}-path-prefix@kubernetescrd
 spec:
     rules:
         {{- if .Values.app.service.host }}
