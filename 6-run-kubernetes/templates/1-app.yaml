@@ -15,7 +15,7 @@ metadata:
 spec:
     stripPrefix:
         prefixes:
-            - {{ default "/" .Values.app.service.url }}
+            - /
 ---
 #   traffic ingress for service
 apiVersion: networking.k8s.io/v1
