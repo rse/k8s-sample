@@ -15,7 +15,7 @@ metadata:
 spec:
     stripPrefix:
         prefixes:
-            - /
+            - {{ default "/" .Values.app.service.url }}
 ---
 #   traffic ingress for service
 apiVersion: networking.k8s.io/v1
@@ -27,7 +27,7 @@ metadata:
         pkg: {{ template "package.fullname" . }}
         tier: {{ .Values.app.name }}
     annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: {{ template "package.namespace" . }}-path-prefix@kubernetescrd
+        traefik.ingress.kubernetes.io/router.middlewares: path-prefix@kubernetescrd
 spec:
     rules:
         {{- if .Values.app.service.host }}
