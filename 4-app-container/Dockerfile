@@ -24,6 +24,7 @@ WORKDIR /go/src/github.com/jwilder/dockerize
 ENV GO111MODULE=on
 RUN go mod tidy
 
+# build Dockerize
 RUN CGO_ENABLED=0 GOOS=linux GO111MODULE=on go build -a -o /go/bin/dockerize .
 RUN strip /go/bin/dockerize
 
