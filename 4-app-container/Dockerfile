@@ -13,19 +13,19 @@ ARG         IMAGE_RELEASE=20200612
 #   ==== STAGE 1 ====
 
 #   derive image from a certain base image
-FROM        golang:1.14.4-alpine3.11 AS stage1
+FROM        golang:1.20.4 AS stage1
 
-#   add additional build tools
-RUN         apk update && apk upgrade && apk add git binutils
+WORKDIR /go/src/github.com/jwilder
+RUN git clone https://github.com/jwilder/dockerize
 
-#   create build environment
-ENV         GOPATH=/tmp/build
-WORKDIR     /tmp/build
+WORKDIR /go/src/github.com/jwilder/dockerize
 
-#   build Dockerize
-RUN         go get -v -d github.com/jwilder/dockerize
-RUN         go build -v -o dockerize github.com/jwilder/dockerize
-RUN         strip dockerize
+# prepare build environment
+ENV GO111MODULE=on
+RUN go mod tidy
+
+RUN CGO_ENABLED=0 GOOS=linux GO111MODULE=on go build -a -o /go/bin/dockerize .
+RUN strip /go/bin/dockerize
 
 #   ==== STAGE 2 ====
 
@@ -87,7 +87,7 @@ RUN         chown -R app:app /data
 USER        app:app
 
 #   install helper utility
-COPY        --chown=app:app --from=stage1 /tmp/build/dockerize /app/bin/
+COPY        --chown=app:app --from=stage1 /go/bin/dockerize /app/bin/
 
 #   install application
 RUN         mkdir -p /app/lib/k8s-sample/fe /app/lib/k8s-sample/be/src /app/lib/k8s-sample/be/node_modules
