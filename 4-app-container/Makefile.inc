@@ -19,7 +19,7 @@ IMAGE_CONFIG = \
 
 #   ==== BUILD ====
 #   (re)build a container image
-DOCKER_BUILD_FLAGS ?= --squash
+DOCKER_BUILD_FLAGS ?=
 build:
 	@$(IMAGE_CONFIG) && \
 	echo "++ building Docker image $${IMAGE_PREFIX}$${IMAGE_NAME}:$${IMAGE_VERSION}-$${IMAGE_RELEASE}" && \
