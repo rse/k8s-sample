@@ -61,7 +61,7 @@ db:
         port:         5432
     storage:
         path:         /data
-        type:         nfs
+        type:         csi-hostpath-sc
         size:         100Mi
         gid:          null
         shared:       false
