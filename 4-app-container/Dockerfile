@@ -13,7 +13,7 @@ ARG         IMAGE_RELEASE=20200612
 #   ==== STAGE 1 ====
 
 #   derive image from a certain base image
-FROM        golang:1.23.1-alpine3.19 AS stage1
+FROM        golang:1.24-alpine3.22 AS stage1
 
 #   add additional build tools
 RUN         apk update && apk upgrade && apk add git binutils
@@ -34,14 +34,14 @@ RUN         strip dockerize
 #   ==== STAGE 2 ====
 
 #   start with the standard Node.js container image
-FROM        node:12.18-alpine AS stage2
+FROM        node:24-alpine AS stage2
 
 #   update system
 RUN         apk update && apk upgrade && apk add bash
 
 #   provide build environment
 RUN         apk add --no-cache --virtual .build-env \
-                binutils-gold gcc g++ python make shadow xz tar \
+                binutils-gold gcc g++ python3 make shadow xz tar \
                 libc-dev linux-headers libgcc libstdc++
 
 #   create application program area
@@ -62,12 +62,12 @@ RUN         (echo "spin=false"; echo "save=false"; echo "loglevel=error") >/app/
 
 #   build application
 RUN         (cd fe && npm install --silent && NODE_ENV=production npm run build)
-RUN         (cd be && npm install --silent --production)
+RUN         (cd be && npm install --silent --production -y)
 
 #   ==== STAGE 3 ====
 
 #   start with the standard Node.js container image
-FROM        node:12.18-alpine
+FROM        node:24-alpine AS stage3
 
 #   update system
 RUN         apk update && apk upgrade && apk add bash
