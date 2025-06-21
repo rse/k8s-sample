@@ -34,8 +34,8 @@ app:
         url:          /k8s-sample
     storage:
         path:         /data
-        mode:         Filesystem
-        type:         null
+        mode:         null
+        type:         csi-hostpath-sc
         size:         100Mi
         gid:          null
         shared:       false

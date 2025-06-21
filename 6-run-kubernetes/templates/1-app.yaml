@@ -158,7 +158,8 @@ spec:
 
 ---
 {{- if .Values.app.storage.shared }}
-#   persistent volume claim
+#   persistent volume claim, needed for "shared DB. The (only) volume prepared 
+#   by this PVC is then used by all pods.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
