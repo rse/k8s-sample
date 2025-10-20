@@ -1,0 +1,7 @@
+#   create the "sample" namespace where the k8s-sample application will live
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: sample
+    labels:
+        name: sample

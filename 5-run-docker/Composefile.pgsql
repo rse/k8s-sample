@@ -4,8 +4,6 @@
 ##  Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 ##
 
-version: "3.7"
-
 services:
 
     #   the k8s-sample application

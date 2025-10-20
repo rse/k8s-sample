@@ -1,0 +1,38 @@
+#   create "sample" service account in "sample" namespace
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+    namespace: sample
+    name: sample
+    labels:
+        name: sample
+---
+#   create full-access role for service account "sample" in "sample" namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+    namespace: sample
+    name: sample-role
+    labels:
+        name: sample
+rules:
+    -   apiGroups: [ "", "*" ]
+        resources: [ "*" ]
+        verbs: [ "*" ]
+---
+#   bind full-access role to service account "sample" in "sample" namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+    namespace: sample
+    name: sample-role-binding
+    labels:
+        name: sample
+subjects:
+    -   kind: ServiceAccount
+        namespace: sample
+        name: sample
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: sample-role
