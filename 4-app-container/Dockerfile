@@ -13,7 +13,7 @@ ARG         IMAGE_RELEASE=20200612
 #   ==== STAGE 1 ====
 
 #   derive image from a certain base image
-FROM        golang:1.24-alpine3.22 AS stage1
+FROM        golang:1.25.3-alpine3.22 AS stage1
 
 #   add additional build tools
 RUN         apk update && apk upgrade && apk add git binutils
