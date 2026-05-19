@@ -10,16 +10,16 @@
         "eslint-plugin-promise":      "4.2.1",
         "eslint-plugin-import":       "2.22.1",
         "eslint-plugin-node":         "11.1.0",
-        "babel-eslint":               "10.1.0"
+        "@babel/eslint-parser":       "7.29.7"
     },
     "dependencies": {
-        "@hapi/hapi":                 "20.0.3",
-        "@hapi/inert":                "6.0.3",
+        "@hapi/hapi":                 "21.4.9",
+        "@hapi/inert":                "7.1.1",
         "@hapi/boom":                 "9.1.1",
         "yargs":                      "16.2.0",
         "knex":                       "0.21.15",
-        "pg":                         "8.5.1",
-        "sqlite3":                    "5.0.1",
+        "pg":                         "8.21.0",
+        "sqlite3":                    "5.1.7",
         "pure-uuid":                  "1.6.2"
     },
     "scripts": {

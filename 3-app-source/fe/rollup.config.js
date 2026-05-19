@@ -14,7 +14,7 @@ import globals     from "rollup-plugin-node-globals"
 import postcss     from "rollup-plugin-postcss"
 import babel       from "@rollup/plugin-babel"
 import url         from "@rollup/plugin-url"
-import { terser }  from "rollup-plugin-terser"
+import terser      from "@rollup/plugin-terser"
 import html        from "rollup-plugin-generate-html"
 import postcssUrl  from "postcss-url"
 
