@@ -27,6 +27,20 @@ spec:
             targetPort: default
 
 ---
+#   config map with database initialization scripts
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: {{ template "package.namespace" . }}
+    name: {{ template "package.fullname" . }}-{{ .Values.db.name }}-initdb
+    labels:
+        pkg: {{ template "package.fullname" . }}
+        tier: {{ .Values.db.name }}
+data:
+    {{ base .Values.db.initdb.script }}: |
+        {{- .Files.Get .Values.db.initdb.script | nindent 8 }}
+
+---
 #   stateful set of pods
 apiVersion: apps/v1
 kind: StatefulSet
@@ -81,16 +95,22 @@ spec:
                     volumeMounts:
                         -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
                             mountPath: {{ .Values.db.storage.path }}
+                        -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}-initdb
+                            mountPath: /docker-entrypoint-initdb.d
             {{- if .Values.db.storage.gid }}
             securityContext:
                 fsGroup: {{ .Values.db.storage.gid }}
             {{- end }}
-            {{- if .Values.db.storage.shared }}
             volumes:
+                -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}-initdb
+                    configMap:
+                        name: {{ template "package.fullname" . }}-{{ .Values.db.name }}-initdb
+                        defaultMode: 0755
+                {{- if .Values.db.storage.shared }}
                 -   name: {{ template "package.fullname" . }}-{{ .Values.db.name }}
                     persistentVolumeClaim:
                         claimName: {{ template "package.fullname" . }}-{{ .Values.db.name }}
-            {{- end }}
+                {{- end }}
     {{- if not .Values.db.storage.shared }}
     volumeClaimTemplates:
         -   metadata:
