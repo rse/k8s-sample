@@ -56,7 +56,8 @@ html, body {
 </style>
 
 <script>
-import bus from "./app-bus"
+import axios from "axios"
+import bus   from "./app-bus"
 
 export default {
     name: "App",
@@ -65,6 +66,8 @@ export default {
     }),
     async created () {
         bus.$on("id", (id) => { this.id = id })
+        const response = await axios.get("api/info")
+        bus.$emit("id", response.data.id)
     }
 }
 </script>
