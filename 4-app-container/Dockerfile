@@ -7,8 +7,8 @@
 #   container information
 ARG         IMAGE_PREFIX=docker.io/engelschall/
 ARG         IMAGE_NAME=k8s-sample
-ARG         IMAGE_VERSION=0.9.5
-ARG         IMAGE_RELEASE=20200612
+ARG         IMAGE_VERSION=0.9.6
+ARG         IMAGE_RELEASE=20260605
 
 #   ==== STAGE 1 ====
 

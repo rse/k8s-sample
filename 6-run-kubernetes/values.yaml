@@ -17,7 +17,7 @@ app:
         command:      [ "sh", "-c", "chown 10000:10000 /data && chmod 755 /data" ]
     container:
         image:        "engelschall/k8s-sample"
-        tag:          "0.9.5-20200612"
+        tag:          "0.9.6-20260605"
         replicas:     1
         restart:      Always
         args:
