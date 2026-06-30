@@ -16,8 +16,8 @@ app:
         tag:          "latest"
         command:      [ "sh", "-c", "chown 10000:10000 /data && chmod 755 /data" ]
     container:
-        image:        "docker.io/engelschall/k8s-sample"
-        tag:          "0.9.5-20200612"
+        image:        "engelschall/k8s-sample"
+        tag:          "0.9.6-20260605"
         replicas:     1
         restart:      Always
         args:
@@ -43,15 +43,17 @@ app:
 db:
     enabled:          false
     name:             db
+    initdb:
+        script:       files/init-user-db.sh
     container:
-        image:        "docker.msg.team/ps/std-postgresql"
-        tag:          "12.3-20200516"
+        image:        "postgres"
+        tag:          "16"
         replicas:     1
         restart:      Always
         args:         []
         env:
-            CFG_ADMIN_PASSWORD:  postgresql
-            CFG_ADMIN_USERNAME:  postgresql
+            POSTGRES_USER:       postgresql
+            POSTGRES_PASSWORD:   postgresql
             CFG_CUSTOM_DATABASE: app
             CFG_CUSTOM_PASSWORD: app
             CFG_CUSTOM_USERNAME: app
@@ -60,7 +62,7 @@ db:
         protocol:     TCP
         port:         5432
     storage:
-        path:         /data
+        path:         /var/lib/postgresql/data
         type:         csi-hostpath-sc
         size:         100Mi
         gid:          null

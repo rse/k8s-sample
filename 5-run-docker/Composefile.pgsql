@@ -9,7 +9,7 @@ services:
     #   the k8s-sample application
     k8s-sample-app:
         container_name: k8s-sample-app
-        image:          docker.io/engelschall/k8s-sample:0.9.5-20200612
+        image:          docker.io/engelschall/k8s-sample:0.9.6-20260605
         command:        -p ${K8S_SAMPLE_APP_PORT-9090}
                         -d pg:postgres://${K8S_SAMPLE_DB_APP_USERNAME-app}:${K8S_SAMPLE_DB_APP_PASSWORD-app}@db/${K8S_SAMPLE_DB_APP_DATABASE-app}
         init:           true
@@ -28,17 +28,18 @@ services:
     #   the k8s-sample database
     k8s-sample-db:
         container_name: k8s-sample-db
-        image:          docker.msg.team/ps/std-postgresql:12.3-20200516
+        image:          docker.io/library/postgres:16
         init:           true
         restart:        always
         environment:
-            CFG_ADMIN_USERNAME:  ${K8S_SAMPLE_DB_ADM_USERNAME-postgresql}
-            CFG_ADMIN_PASSWORD:  ${K8S_SAMPLE_DB_ADM_PASSWORD-postgresql}
+            POSTGRES_USER:     ${K8S_SAMPLE_DB_APP_USERNAME-postgresql}
+            POSTGRES_PASSWORD: ${K8S_SAMPLE_DB_APP_PASSWORD-postgresql}
             CFG_CUSTOM_DATABASE: ${K8S_SAMPLE_DB_APP_DATABASE-app}
             CFG_CUSTOM_USERNAME: ${K8S_SAMPLE_DB_APP_USERNAME-app}
             CFG_CUSTOM_PASSWORD: ${K8S_SAMPLE_DB_APP_PASSWORD-app}
         volumes:
             - k8s-sample-db:/data
+            - ./init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh:ro
         networks:
             k8s-sample: { aliases: [ db ] }
 

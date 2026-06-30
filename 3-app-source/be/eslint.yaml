@@ -11,12 +11,13 @@ extends:
     - eslint-config-standard
 
 parserOptions:
+    requireConfigFile: false
     ecmaVersion: 8
     sourceType:  module
     ecmaFeatures:
         jsx:     false
 
-parser: babel-eslint
+parser: "@babel/eslint-parser"
 
 env:
     browser:       false

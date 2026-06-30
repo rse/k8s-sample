@@ -180,7 +180,6 @@
 
 <script>
 import axios from "axios"
-import bus   from "./app-bus"
 
 export default {
     name: "AppInfo",
@@ -202,7 +201,6 @@ export default {
         this.env    = sort(response.data.env)
         this.header = sort(response.data.header)
         this.peer   = map(response.data.peer)
-        bus.$emit("id", response.data.id)
     }
 }
 </script>

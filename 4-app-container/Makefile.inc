@@ -23,7 +23,7 @@ DOCKER_BUILD_FLAGS ?=
 build:
 	@$(IMAGE_CONFIG) && \
 	echo "++ building Docker image $${IMAGE_PREFIX}$${IMAGE_NAME}:$${IMAGE_VERSION}-$${IMAGE_RELEASE}" && \
-	tar -c -f - -C $(DOCKER_BUILD_SOURCE) . | xz >src.tar.xz; \
+	tar -c -f - -C $(DOCKER_BUILD_SOURCE) --exclude=node_modules --exclude=app.sqlite . | xz >src.tar.xz; \
 	docker build \
 	    $(DOCKER_BUILD_FLAGS) \
 	    -t $${IMAGE_PREFIX}$${IMAGE_NAME}:latest \
